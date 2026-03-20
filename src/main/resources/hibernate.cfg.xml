@@ -1,0 +1,31 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!--Ruta base embebida-->
+        <property name="connection.url">jdbc:sqlite:sentinelmon.db</property>
+
+        <!--
+        Usuario y contraseña de la base de datos
+        vacias al ser embebidas
+        -->
+        <property name="connection.username"></property>
+        <property name="connection.password"></property>
+
+        <!--Driver sqlite-->
+        <property name="connection.driver_class">org.sqlite.JDBC</property>
+
+        <!--El traductor que usara hibernate-->
+        <property name="dialect">org.hibernate.community.dialect.SQLiteDialect</property>
+
+        <!--Depuracion activada en la fase de desarrollo-->
+        <property name="show_sql">true</property>
+        <property name="format_sql">true</property>
+
+        <!--comprueba tablas y si no las crea-->
+        <property name="hbm2ddl.auto">update</property>
+
+    </session-factory>
+</hibernate-configuration>

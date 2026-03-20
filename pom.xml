@@ -32,7 +32,13 @@
             <version>7.3.0.Final</version>
             <scope>compile</scope>
         </dependency>
-
+        <!--Libreria de dialectos hibernate-->
+        <dependency>
+            <groupId>org.hibernate.orm</groupId>
+            <artifactId>hibernate-community-dialects</artifactId>
+            <version>7.3.0.Final</version>
+            <scope>compile</scope>
+        </dependency>
         <!--Micrometer Libreria java de monitorizacion sinergia con OSHI-->
         <dependency>
             <groupId>io.micrometer</groupId>
@@ -40,6 +46,12 @@
             <version>1.17.0-M3</version>
             <scope>compile</scope>
         </dependency>
+        <!--sqlite-->
+        <dependency>
+            <groupId>org.xerial</groupId>
+            <artifactId>sqlite-jdbc</artifactId>
+            <version>3.45.1.0</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
-
 </project>
