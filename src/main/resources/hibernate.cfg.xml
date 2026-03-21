@@ -4,7 +4,7 @@
 
 <hibernate-configuration>
     <session-factory>
-        <!--Ruta base embebida-->
+        <!--Ruta base de datos-->
         <property name="connection.url">jdbc:sqlite:sentinelmon.db</property>
 
         <!--
