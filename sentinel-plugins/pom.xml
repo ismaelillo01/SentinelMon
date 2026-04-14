@@ -13,9 +13,4 @@
     <artifactId>sentinel-plugins</artifactId>
     <packaging>pom</packaging>
 
-    <modules>
-        <module>plugin-syslogs</module>
-        <module>plugin-fancontrol</module>
-    </modules>
-
 </project>

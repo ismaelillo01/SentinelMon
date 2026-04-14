@@ -13,10 +13,14 @@
     <artifactId>sentinel-api</artifactId>
 
     <dependencies>
-        <!-- PF4J es necesario en la API para las interfaces Plugin y ExtensionPoint -->
         <dependency>
             <groupId>org.pf4j</groupId>
             <artifactId>pf4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-fxml</artifactId>
+            <version>${javafx.version}</version>
         </dependency>
     </dependencies>
 </project>

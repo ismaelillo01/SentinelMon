@@ -1,4 +1,4 @@
-package monitoring;
+package test.java;
 
 import oshi.SystemInfo;
 import oshi.hardware.CentralProcessor;

@@ -30,6 +30,13 @@
             <artifactId>oshi-core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.github.pandalxb</groupId>
+            <artifactId>jLibreHardwareMonitor</artifactId>
+            <version>1.0.6</version>
+        </dependency>
+
+
         <!-- Hibernate & DB -->
         <dependency>
             <groupId>org.hibernate.orm</groupId>
