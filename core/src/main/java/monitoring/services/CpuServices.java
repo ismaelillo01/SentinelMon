@@ -5,8 +5,6 @@ import oshi.hardware.CentralProcessor;
 import oshi.hardware.HardwareAbstractionLayer;
 import oshi.hardware.Sensors;
 
-import java.util.Locale;
-
 public class CpuServices {
     private static final String NO_DISPONIBLE = "No disponible";
     private final CentralProcessor cpu;

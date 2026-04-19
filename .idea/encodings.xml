@@ -9,6 +9,8 @@
     <file url="file://$PROJECT_DIR$/sentinel-core/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/sentinel-plugins/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/sentinel-plugins/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sentinel-ui/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sentinel-ui/src/main/resources" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/src/main/resources" charset="UTF-8" />
   </component>

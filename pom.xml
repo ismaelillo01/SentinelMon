@@ -13,6 +13,7 @@
         <module>sentinel-api</module>
         <module>core</module>
         <module>sentinel-plugins</module>
+        <module>sentinel-ui</module>
     </modules>
 
     <properties>
@@ -20,11 +21,12 @@
         <maven.compiler.target>21</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <pf4j.version>3.15.0</pf4j.version>
-        <oshi.version>6.10.0</oshi.version>
+        <oshi.version>6.7.0</oshi.version>
         <hibernate.version>7.3.0.Final</hibernate.version>
         <micrometer.version>1.17.0-M3</micrometer.version>
         <sqlite.version>3.45.1.0</sqlite.version>
         <javafx.version>21.0.2</javafx.version>
+        <jLibreHardwareMonitor.version>1.0.5</jLibreHardwareMonitor.version>
     </properties>
 
     <dependencyManagement>
