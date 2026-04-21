@@ -24,7 +24,13 @@ public class DashboardController implements Initializable {
     @FXML
     private Arc arcCpu;
     @FXML
+    private Label lblCpuName;
+    @FXML
     private Label lblCpuLoad;
+    @FXML
+    private Label lblCpuCores;
+    @FXML
+    private Label lblCpuSpeed;
     @FXML
     private Label lblCpuTemp;
     @FXML
@@ -36,7 +42,11 @@ public class DashboardController implements Initializable {
     @FXML
     private Arc arcGpu;
     @FXML
+    private Label lblGpuName;
+    @FXML
     private Label lblGpuLoad;
+    @FXML
+    private Label lblGpuVram;
     @FXML
     private Label lblGpuTemp;
     @FXML
@@ -48,7 +58,11 @@ public class DashboardController implements Initializable {
     @FXML
     private Arc arcRam;
     @FXML
+    private Label lblRamModel;
+    @FXML
     private Label lblRamLoad;
+    @FXML
+    private Label lblRamTotal;
     @FXML
     private Label lblRamFree;
     @FXML
@@ -77,9 +91,12 @@ public class DashboardController implements Initializable {
 
         // cpu update
         CpuInfo datosCpu = miCpu.getInfo();
+        lblCpuName.setText(datosCpu.getNombre());
         double usoDeCpu = datosCpu.getUsoPorcentaje();
         lblCpuLoad.setText(Math.round(usoDeCpu) + "%");
         setArcProgress(arcCpu, usoDeCpu);
+        lblCpuCores.setText(datosCpu.getNucleos() + " Nucleos");
+        lblCpuSpeed.setText(datosCpu.getVelocidad());
         lblCpuTemp.setText(datosCpu.getTemperatura());
         lblCpuFan.setText(datosCpu.getCpuFan());
         // barra de prgreso maximo 100º
@@ -92,9 +109,11 @@ public class DashboardController implements Initializable {
 
         // ram update
         RamInfo datosRam = miRam.getInfo();
+        lblRamModel.setText(datosRam.getModelo());
         double usoDeRam = datosRam.getUsoPorcentaje();
         lblRamLoad.setText(Math.round(usoDeRam) + "%");
         setArcProgress(arcRam, usoDeRam);
+        lblRamTotal.setText(datosRam.getTotalMemoryGB() + " GB");
 
         double libre = 100 - usoDeRam;
         lblRamFree.setText(Math.round(libre) + "%");
@@ -106,14 +125,21 @@ public class DashboardController implements Initializable {
         // gpu update
         List<GpuInfo> listaGpus = miGpu.getInfo();
         if (listaGpus != null && !listaGpus.isEmpty()) {
+            GpuInfo gpuPrincipal = listaGpus.get(0);
+            lblGpuName.setText(gpuPrincipal.getNombre());
+            lblGpuVram.setText(gpuPrincipal.getTotalVramGB() + " GB");
             lblGpuLoad.setText("Por dev");
             setArcProgress(arcGpu, 0);
             lblGpuTemp.setText("Por dev");
             lblGpuFan.setText("Por dev");
             pbGpuTemp.setProgress(0.0);
         } else {
+            lblGpuName.setText("No disponible");
+            lblGpuVram.setText("No disponible");
             lblGpuLoad.setText("0%");
             setArcProgress(arcGpu, 0);
+            lblGpuTemp.setText("No disponible");
+            lblGpuFan.setText("No disponible");
             pbGpuTemp.setProgress(0.0);
         }
 
@@ -126,20 +152,20 @@ public class DashboardController implements Initializable {
                 HBox cabecera = new HBox();
                 Label lblLetra = new Label(discoActual.getLetra());
                 lblLetra.setStyle("-fx-text-fill: white; -fx-font-size: 12px;");
+                Label lblModelo = new Label("  " + discoActual.getModelo());
+                lblModelo.setStyle("-fx-text-fill: #8a8fa8; -fx-font-size: 11px;");
                 Region espacio = new Region();
                 HBox.setHgrow(espacio, Priority.ALWAYS);
+                double totalRedondeado = Math.round(discoActual.getTotalGB() * 10.0) / 10.0;
+                Label lblTotal = new Label(totalRedondeado + " GB");
+                lblTotal.setStyle("-fx-text-fill: #8a8fa8; -fx-font-size: 11px; -fx-padding: 0 10 0 0;");
                 Label lblPorcentaje = new Label(Math.round(porcentajeUsado * 100) + "%");
                 lblPorcentaje.setStyle("-fx-text-fill: white; -fx-font-size: 12px;");
-                cabecera.getChildren().addAll(lblLetra, espacio, lblPorcentaje);
+                cabecera.getChildren().addAll(lblLetra, lblModelo, espacio, lblTotal, lblPorcentaje);
 
                 ProgressBar barraDisco = new ProgressBar(porcentajeUsado);
                 barraDisco.setPrefWidth(2000);
                 barraDisco.getStyleClass().add("progress-bar-cyan");
-                // estilos
-                if (discoActual.getLetra().contains("C"))
-                    barraDisco.setStyle("-fx-accent: #1dc2bb;");
-                else if (discoActual.getLetra().contains("D"))
-                    barraDisco.setStyle("-fx-accent: #3168c8;");
 
                 VBox cajita = new VBox(5, cabecera, barraDisco);
                 cajita.setStyle("-fx-padding: 0 0 10 0;");

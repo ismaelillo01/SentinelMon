@@ -1,178 +1,211 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
+<BorderPane stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoring.ui.controllers.DashboardController">
 
-<BorderPane xmlns:fx="http://javafx.com/fxml" fx:controller="monitoring.ui.controllers.DashboardController" stylesheets="@../css/style.css">
-    
-    
+
     <left>
-        <VBox styleClass="sidebar" prefWidth="250" spacing="20">
-            <Label text="SENTINELMON" styleClass="title-label"/>
-            
-            <Button text="MENU" styleClass="menu-btn, active" />
-            <Button text="VER MAS" styleClass="menu-btn" />
-            <Button text="CONTACTANOS" styleClass="menu-btn" />
-            <Button text="AYUDA" styleClass="menu-btn" />
+        <VBox prefWidth="250" spacing="20" styleClass="sidebar">
+            <Label styleClass="title-label" text="SENTINELMON" />
+
+            <Button styleClass="menu-btn, active" text="MENU" />
+            <Button styleClass="menu-btn" text="VER MAS" />
+            <Button styleClass="menu-btn" text="CONTACTANOS" />
+            <Button styleClass="menu-btn" text="AYUDA" />
             <Region VBox.vgrow="ALWAYS" />
         </VBox>
     </left>
-    
-    
+
+
     <center>
         <VBox style="-fx-background-color: #2b304c;">
-            
-            <HBox styleClass="top-bar" prefHeight="60" alignment="CENTER_RIGHT" spacing="15">
+
+            <HBox alignment="CENTER_RIGHT" prefHeight="60" spacing="15" styleClass="top-bar">
                 <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" />
-                <Label text="Equipo: DESKTOP-001   Sistema: Windows 11 Pro   Version app: 1.0.0   Estado: " styleClass="system-info-label" fx:id="lblSystemInfo"/>
-                <Label text="Operativo" styleClass="status-label"/>
-                
+                <Label fx:id="lblSystemInfo" styleClass="system-info-label" text="Equipo: DESKTOP-001   Sistema: Windows 11 Pro   Version app: 1.0.0   Estado: " />
+                <Label styleClass="status-label" text="Operativo" />
+
                 <Region prefWidth="30" />
-                <Button text="MODULOS / APPS" style="-fx-background-color: transparent; -fx-border-color: #4a5585; -fx-border-radius: 15; -fx-text-fill: white; -fx-padding: 5 15;" />
+                <Button style="-fx-background-color: transparent; -fx-border-color: #4a5585; -fx-border-radius: 15; -fx-text-fill: white; -fx-padding: 5 15;" text="MODULOS / APPS" />
                 <Button styleClass="btn-icon">
                     <graphic>
-                        <SVGPath content="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" fill="white" scaleX="0.75" scaleY="0.75"/>
+                        <SVGPath content="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" fill="white" scaleX="0.75" scaleY="0.75" />
                     </graphic>
                 </Button>
             </HBox>
-            
-            
+
+
             <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
-                <GridPane hgap="20" vgap="20" style="-fx-padding: 20;">
+                <GridPane hgap="20" style="-fx-padding: 20;" vgap="20">
                     <columnConstraints>
                         <ColumnConstraints percentWidth="50" />
                         <ColumnConstraints percentWidth="50" />
                     </columnConstraints>
-                    
-                    
+
+
                     <VBox styleClass="card" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                        <Label text="CPU" styleClass="card-title" />
-                        <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 10 0 20 0;">
-                            <StackPane>
-                                <Arc styleClass="arc-track" radiusX="45" radiusY="45" startAngle="90" length="360" />
-                                <Arc fx:id="arcCpu" styleClass="arc-cyan" radiusX="45" radiusY="45" startAngle="90" length="-151" /> <!-- 42% -->
+                        <HBox alignment="CENTER_LEFT">
+                            <Label styleClass="card-title" text="CPU" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label fx:id="lblCpuName" styleClass="metric-value-small" text="nombre cpu" />
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 20 0 20 0;">
+                            <StackPane minHeight="100" minWidth="100">
+                                <Group>
+                                    <Arc length="360" radiusX="45" radiusY="45" startAngle="90" styleClass="arc-track" />
+                                    <Arc fx:id="arcCpu" length="-151" radiusX="45" radiusY="45" startAngle="90" styleClass="arc-cyan" />
+                                </Group>
                             </StackPane>
                             <VBox alignment="CENTER_LEFT">
-                                <Label fx:id="lblCpuLoad" text="0%" styleClass="metric-value-large" />
-                                <Label text="Uso actual" styleClass="metric-label" />
+                                <Label fx:id="lblCpuLoad" styleClass="metric-value-large" text="0%" />
+                                <Label styleClass="metric-label" text="Uso actual" />
+                            </VBox>
+                            <VBox alignment="CENTER_LEFT">
+                                <Label fx:id="lblCpuCores" styleClass="metric-value-small" text="1" />
+                                <Label fx:id="lblCpuSpeed" styleClass="metric-value-small" text="1" />
                             </VBox>
                         </HBox>
-                        
+
                         <HBox>
-                            <Label text="Temperatura" styleClass="metric-label" />
+                            <Label styleClass="metric-label" text="Temperatura" />
                             <Region HBox.hgrow="ALWAYS" />
-                            <Label fx:id="lblCpuTemp" text="0 C" styleClass="metric-temp" />
+                            <Label fx:id="lblCpuTemp" styleClass="metric-temp" text="0 C" />
                         </HBox>
-                        <ProgressBar fx:id="pbCpuTemp" progress="0.63" prefWidth="2000" styleClass="progress-bar-cyan" />
-                        
+                        <ProgressBar fx:id="pbCpuTemp" prefWidth="2000" progress="0.63" styleClass="progress-bar-cyan" />
+
                         <HBox style="-fx-padding: 10 0 0 0;">
-                            <Label text="CPU FAN" styleClass="metric-label" />
+                            <Label styleClass="metric-label" text="CPU FAN" />
                             <Region HBox.hgrow="ALWAYS" />
-                            <Label fx:id="lblCpuFan" text="0 RPM" styleClass="metric-value-small" />
+                            <Label fx:id="lblCpuFan" styleClass="metric-value-small" text="0 RPM" />
                         </HBox>
-                        <ProgressBar progress="0.0" prefWidth="2000" styleClass="progress-bar-cyan" />
+                        <ProgressBar prefWidth="2000" progress="0.0" styleClass="progress-bar-cyan" />
                     </VBox>
-                    
-                    
+
+
                     <VBox styleClass="card" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                        <Label text="GPU" styleClass="card-title" />
-                        <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 10 0 20 0;">
-                            <StackPane>
-                                <Arc styleClass="arc-track" radiusX="45" radiusY="45" startAngle="90" length="360" />
-                                <Arc fx:id="arcGpu" styleClass="arc-purple" radiusX="45" radiusY="45" startAngle="90" length="-111" /> <!-- 31% -->
+                        <HBox alignment="CENTER_LEFT">
+                            <Label styleClass="card-title" text="GPU" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label fx:id="lblGpuName" styleClass="metric-value-small" text="nombre gpu" />
+                        </HBox>
+                        <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 20 0 20 0;">
+                            <StackPane minHeight="100" minWidth="100">
+                                <Group>
+                                    <Arc length="360" radiusX="45" radiusY="45" startAngle="90" styleClass="arc-track" />
+                                    <Arc fx:id="arcGpu" length="-111" radiusX="45" radiusY="45" startAngle="90" styleClass="arc-purple" />
+                                </Group>
                             </StackPane>
                             <VBox alignment="CENTER_LEFT">
-                                <Label fx:id="lblGpuLoad" text="0%" styleClass="metric-value-large" />
-                                <Label text="Uso actual" styleClass="metric-label" />
+                                <Label fx:id="lblGpuLoad" styleClass="metric-value-large" text="0%" />
+                                <Label styleClass="metric-label" text="Uso actual" />
+                                <Label fx:id="lblGpuVram" styleClass="metric-value-small" text="1" />
                             </VBox>
                         </HBox>
-                        
-                        <HBox>
-                            <Label text="Temperatura" styleClass="metric-label" />
-                            <Region HBox.hgrow="ALWAYS" />
-                            <Label fx:id="lblGpuTemp" text="0 C" styleClass="metric-value-small" />
-                        </HBox>
-                        <ProgressBar fx:id="pbGpuTemp" progress="0.58" prefWidth="2000" styleClass="progress-bar-cyan" style="-fx-accent: #1dc2bb;" />
-                        
+
                         <HBox style="-fx-padding: 10 0 0 0;">
-                            <Label text="GPU FAN" styleClass="metric-label" />
+                            <Label styleClass="metric-label" text="Temperatura" />
                             <Region HBox.hgrow="ALWAYS" />
-                            <Label fx:id="lblGpuFan" text="0 RPM" styleClass="metric-value-small" />
+                            <Label fx:id="lblGpuTemp" styleClass="metric-value-small" text="0 C" />
                         </HBox>
-                        <ProgressBar progress="0.0" prefWidth="2000" styleClass="progress-bar-cyan" />
+                        <ProgressBar fx:id="pbGpuTemp" prefWidth="2000" progress="0.58" style="-fx-accent: #1dc2bb;" styleClass="progress-bar-cyan" />
+
+                        <HBox style="-fx-padding: 10 0 0 0;">
+                            <Label styleClass="metric-label" text="GPU FAN" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label fx:id="lblGpuFan" styleClass="metric-value-small" text="0 RPM" />
+                        </HBox>
+                        <ProgressBar prefWidth="2000" progress="0.0" styleClass="progress-bar-cyan" />
                     </VBox>
-                    
-                    
+
+
                     <VBox styleClass="card" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.rowSpan="2">
-                        <Label text="RAM" styleClass="card-title" />
+                        <HBox alignment="CENTER_LEFT">
+                            <Label styleClass="card-title" text="RAM" />
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Label fx:id="lblRamModel" styleClass="metric-value-small" text="modelo ram" />
+                        </HBox>
                         <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 20 0 40 0;">
-                            <StackPane>
-                                <Arc styleClass="arc-track" radiusX="45" radiusY="45" startAngle="90" length="360" />
-                                <Arc fx:id="arcRam" styleClass="arc-blue" radiusX="45" radiusY="45" startAngle="90" length="-241" /> <!-- 67% -->
+                            <StackPane minHeight="100" minWidth="100">
+                                <Group>
+                                    <Arc length="360" radiusX="45" radiusY="45" startAngle="90" styleClass="arc-track" />
+                                    <Arc fx:id="arcRam" length="-241" radiusX="45" radiusY="45" startAngle="90" styleClass="arc-blue" />
+                                </Group>
                             </StackPane>
                             <VBox alignment="CENTER_LEFT">
-                                <Label fx:id="lblRamLoad" text="0%" styleClass="metric-value-large" />
-                                <Label text="Uso actual" styleClass="metric-label" />
+                                <Label fx:id="lblRamLoad" styleClass="metric-value-large" text="0%" />
+                                <Label styleClass="metric-label" text="Uso actual" />
+                                <Label fx:id="lblRamTotal" styleClass="metric-value-small" text="1" />
                             </VBox>
                         </HBox>
-                        
-                        <HBox>
-                            <Label text="Memoria valida" styleClass="metric-label" />
+
+                        <HBox style="-fx-padding: 10 0 0 0;">
+                            <Label styleClass="metric-label" text="Memoria valida" />
                             <Region HBox.hgrow="ALWAYS" />
-                            <Label fx:id="lblRamFree" text="0%" styleClass="metric-value-small" />
+                            <Label fx:id="lblRamFree" styleClass="metric-value-small" text="0%" />
                         </HBox>
-                        <ProgressBar fx:id="pbRamFree" progress="0.5" prefWidth="2000" styleClass="progress-bar-cyan" />
-                        
+                        <ProgressBar fx:id="pbRamFree" prefWidth="2000" progress="0.5" styleClass="progress-bar-cyan" />
+
                         <HBox style="-fx-padding: 15 0 0 0;">
-                            <Label text="Memoria usada" styleClass="metric-label" />
+                            <Label styleClass="metric-label" text="Memoria usada" />
                             <Region HBox.hgrow="ALWAYS" />
-                            <Label fx:id="lblRamUsedVal" text="0%" styleClass="metric-value-small" />
+                            <Label fx:id="lblRamUsedVal" styleClass="metric-value-small" text="0%" />
                         </HBox>
-                        <ProgressBar fx:id="pbRamUsed" progress="0.15" prefWidth="2000" styleClass="progress-bar-cyan" style="-fx-accent: #3168c8" />
+                        <ProgressBar fx:id="pbRamUsed" prefWidth="2000" progress="0.15" style="-fx-accent: #3168c8" styleClass="progress-bar-cyan" />
                     </VBox>
-                    
-                    
+
+
                     <VBox styleClass="card" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <Label text="METRICAS ELECTRICAS" styleClass="card-title" />
-                        <GridPane hgap="40" vgap="15" style="-fx-padding: 15 0 0 0;">
-                             <columnConstraints>
+                        <Label styleClass="card-title" text="METRICAS ELECTRICAS" />
+                        <GridPane hgap="40" style="-fx-padding: 15 0 0 0;" vgap="15">
+                            <columnConstraints>
                                 <ColumnConstraints percentWidth="50" />
                                 <ColumnConstraints percentWidth="50" />
                             </columnConstraints>
                             <HBox style="-fx-border-color: #343954; -fx-border-width: 0 0 1 0; -fx-padding: 5;">
-                                <Label text="CPU Package" styleClass="table-text-left" />
+                                <Label styleClass="table-text-left" text="CPU Package" />
                                 <Region HBox.hgrow="ALWAYS" />
-                                <Label text="Por desarrollar" styleClass="table-text-right" />
+                                <Label styleClass="table-text-right" text="Por desarrollar" />
                             </HBox>
                             <HBox style="-fx-border-color: #343954; -fx-border-width: 0 0 1 0; -fx-padding: 5;" GridPane.columnIndex="1">
-                                <Label text="GPU Package" styleClass="table-text-left" />
+                                <Label styleClass="table-text-left" text="GPU Package" />
                                 <Region HBox.hgrow="ALWAYS" />
-                                <Label text="Por desarrollar" styleClass="table-text-right" />
+                                <Label styleClass="table-text-right" text="Por desarrollar" />
                             </HBox>
                             <HBox style="-fx-border-color: #343954; -fx-border-width: 0 0 1 0; -fx-padding: 5;" GridPane.rowIndex="1">
-                                <Label text="CPU Voltage" styleClass="table-text-left" />
+                                <Label styleClass="table-text-left" text="CPU Voltage" />
                                 <Region HBox.hgrow="ALWAYS" />
-                                <Label text="Por desarrollar" styleClass="table-text-right" />
+                                <Label styleClass="table-text-right" text="Por desarrollar" />
                             </HBox>
                             <HBox style="-fx-border-color: #343954; -fx-border-width: 0 0 1 0; -fx-padding: 5;" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                <Label text="GPU Voltage" styleClass="table-text-left" />
+                                <Label styleClass="table-text-left" text="GPU Voltage" />
                                 <Region HBox.hgrow="ALWAYS" />
-                                <Label text="Por desarrollar" styleClass="table-text-right" />
+                                <Label styleClass="table-text-right" text="Por desarrollar" />
                             </HBox>
+                     <rowConstraints>
+                        <RowConstraints />
+                        <RowConstraints />
+                     </rowConstraints>
                         </GridPane>
                     </VBox>
-                    
-                    
+
+
                     <VBox styleClass="card" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                        <Label text="DISCOS FISICOS" styleClass="card-title" />
+                        <Label styleClass="card-title" text="DISCOS FISICOS" />
                         <VBox fx:id="vboxDisks" spacing="10" style="-fx-padding: 10 0 0 0;">
                         </VBox>
                     </VBox>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
                 </GridPane>
             </ScrollPane>
         </VBox>
     </center>
-    
+
 </BorderPane>

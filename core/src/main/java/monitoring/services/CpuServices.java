@@ -25,6 +25,21 @@ public class CpuServices {
         return nombreCpu;
     }
 
+    //devuelve numero de nucleos fisicos
+    public int getNucleos() {
+        return cpu.getPhysicalProcessorCount();
+    }
+
+    //devuelve velocidad maxima en GHz
+    public String getVelocidad() {
+        long freqHz = cpu.getMaxFreq();
+        if (freqHz <= 0) {
+            return NO_DISPONIBLE;
+        }
+        double freqGHz = freqHz / 1_000_000_000.0;
+        return "%.2f GHz".formatted(freqGHz);
+    }
+
     //devuelve porcentaje uso
     public double getUsagePercentage() {
         return redondear(cpu.getSystemCpuLoad(1000) * 100);
@@ -52,7 +67,7 @@ public class CpuServices {
 
     //info completa de cpu
     public CpuInfo getInfo() {
-        return new CpuInfo(getName(), getUsagePercentage(), getTemperatura(), getCpuFan());
+        return new CpuInfo(getName(), getNucleos(), getVelocidad(), getUsagePercentage(), getTemperatura(), getCpuFan());
     }
 
     private double redondear(double valor) {

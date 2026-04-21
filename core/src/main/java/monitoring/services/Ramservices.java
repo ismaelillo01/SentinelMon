@@ -3,6 +3,9 @@ package monitoring.services;
 import oshi.SystemInfo;
 import oshi.hardware.GlobalMemory;
 import oshi.hardware.HardwareAbstractionLayer;
+import oshi.hardware.PhysicalMemory;
+
+import java.util.List;
 
 public class Ramservices {
     private final GlobalMemory ram;
@@ -29,9 +32,26 @@ public class Ramservices {
         return redondear(bytesAGigas(ram.getTotal()));
     }
 
+    //devuelve modelo de la ram
+    public String getModelo() {
+        List<PhysicalMemory> memorias = ram.getPhysicalMemory();
+        if (memorias == null || memorias.isEmpty()) {
+            return "No disponible";
+        }
+        String fabricante = memorias.get(0).getManufacturer();
+        String tipo = memorias.get(0).getMemoryType();
+        if (fabricante == null || fabricante.isBlank()) {
+            fabricante = "Desconocido";
+        }
+        if (tipo == null || tipo.isBlank()) {
+            tipo = "";
+        }
+        return fabricante + " " + tipo;
+    }
+
     //devuelve toda la info
     public RamInfo getInfo() {
-        return new RamInfo(getUsagePercentage(), getTotalMemoryGB());
+        return new RamInfo(getModelo(), getUsagePercentage(), getTotalMemoryGB());
     }
 
     private double bytesAGigas(long bytesTotales) {

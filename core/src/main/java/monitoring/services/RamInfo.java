@@ -1,12 +1,18 @@
 package monitoring.services;
 
 public class RamInfo {
+    private String modelo;
     private double usoPorcentaje;
     private double totalMemoryGB;
 
-    public RamInfo(double usoPorcentaje, double totalMemoryGB) {
+    public RamInfo(String modelo, double usoPorcentaje, double totalMemoryGB) {
+        this.modelo = modelo;
         this.usoPorcentaje = usoPorcentaje;
         this.totalMemoryGB = totalMemoryGB;
+    }
+
+    public String getModelo() {
+        return modelo;
     }
 
     public double getUsoPorcentaje() {
@@ -20,7 +26,8 @@ public class RamInfo {
     @Override
     public String toString() {
         return "RamInfo{" +
-                "usoPorcentaje=" + usoPorcentaje +
+                "modelo='" + modelo + '\'' +
+                ", usoPorcentaje=" + usoPorcentaje +
                 ", totalMemoryGB=" + totalMemoryGB +
                 '}';
     }
