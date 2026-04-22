@@ -162,3 +162,55 @@
 .btn-icon:hover {
     -fx-background-color: #3b4570;
 }
+
+
+.btn-outline {
+    -fx-background-color: transparent;
+    -fx-border-color: #4a5585;
+    -fx-border-radius: 15;
+    -fx-text-fill: white;
+    -fx-padding: 5 15;
+}
+
+
+.scroll-transparent {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+
+.content-grid {
+    -fx-padding: 20;
+}
+
+
+.arc-section {
+    -fx-padding: 20 0 20 0;
+}
+
+.arc-section-tall {
+    -fx-padding: 20 0 40 0;
+}
+
+
+.pad-top-sm {
+    -fx-padding: 10 0 0 0;
+}
+
+.pad-top-md {
+    -fx-padding: 15 0 0 0;
+}
+
+.pad-right-sm {
+    -fx-padding: 0 10 0 0;
+}
+
+.table-row {
+    -fx-border-color: #343954;
+    -fx-border-width: 0 0 1 0;
+    -fx-padding: 5;
+}
+
+.disk-item {
+    -fx-padding: 0 0 10 0;
+}

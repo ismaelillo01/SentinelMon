@@ -85,8 +85,9 @@ public class DashboardController implements Initializable {
         DiskServices misDiscos = new DiskServices();
 
         // sistema operativo
-        String nombreSO = System.getProperty("os.name");
-        lblSystemInfo.setText("Equipo: " + System.getenv("COMPUTERNAME") + "   Sistema: " + nombreSO
+        OsServices osServices = new OsServices();
+        OsInfo osInfo = osServices.getInfo();
+        lblSystemInfo.setText("Equipo: " + osInfo.getNombreEquipo() + "   Sistema: " + osInfo.getNombre()
                 + "   Version app: 1.0.0(beta)   Estado: ");
 
         // cpu update
@@ -96,13 +97,13 @@ public class DashboardController implements Initializable {
         lblCpuLoad.setText(Math.round(usoDeCpu) + "%");
         setArcProgress(arcCpu, usoDeCpu);
         lblCpuCores.setText(datosCpu.getNucleos() + " Nucleos");
-        lblCpuSpeed.setText(datosCpu.getVelocidad());
-        lblCpuTemp.setText(datosCpu.getTemperatura());
+        lblCpuSpeed.setText(datosCpu.getVelocidad()+ " GHz");
+        lblCpuTemp.setText(datosCpu.getTemperatura()+ " Cº");
         lblCpuFan.setText(datosCpu.getCpuFan());
-        // barra de prgreso maximo 100º
+        // barra de prgreso maximo 100º de temperatura
         try {
-            double tempParceada = Double.parseDouble(datosCpu.getTemperatura().replace(" C", "").replace(",", "."));
-            pbCpuTemp.setProgress(tempParceada / 100.0);
+            System.out.println(datosCpu.getTemperatura());
+            pbCpuTemp.setProgress(Double.parseDouble(datosCpu.getTemperatura()) / 100.0);
         } catch (Exception e) {
             pbCpuTemp.setProgress(0);
         }
@@ -128,6 +129,7 @@ public class DashboardController implements Initializable {
             GpuInfo gpuPrincipal = listaGpus.get(0);
             lblGpuName.setText(gpuPrincipal.getNombre());
             lblGpuVram.setText(gpuPrincipal.getTotalVramGB() + " GB");
+            //oshi no puede leer esto
             lblGpuLoad.setText("Por dev");
             setArcProgress(arcGpu, 0);
             lblGpuTemp.setText("Por dev");
@@ -151,16 +153,16 @@ public class DashboardController implements Initializable {
 
                 HBox cabecera = new HBox();
                 Label lblLetra = new Label(discoActual.getLetra());
-                lblLetra.setStyle("-fx-text-fill: white; -fx-font-size: 12px;");
+                lblLetra.getStyleClass().add("metric-value-small");
                 Label lblModelo = new Label("  " + discoActual.getModelo());
-                lblModelo.setStyle("-fx-text-fill: #8a8fa8; -fx-font-size: 11px;");
+                lblModelo.getStyleClass().add("metric-label");
                 Region espacio = new Region();
                 HBox.setHgrow(espacio, Priority.ALWAYS);
                 double totalRedondeado = Math.round(discoActual.getTotalGB() * 10.0) / 10.0;
                 Label lblTotal = new Label(totalRedondeado + " GB");
-                lblTotal.setStyle("-fx-text-fill: #8a8fa8; -fx-font-size: 11px; -fx-padding: 0 10 0 0;");
+                lblTotal.getStyleClass().addAll("metric-label", "pad-right-sm");
                 Label lblPorcentaje = new Label(Math.round(porcentajeUsado * 100) + "%");
-                lblPorcentaje.setStyle("-fx-text-fill: white; -fx-font-size: 12px;");
+                lblPorcentaje.getStyleClass().add("metric-value-small");
                 cabecera.getChildren().addAll(lblLetra, lblModelo, espacio, lblTotal, lblPorcentaje);
 
                 ProgressBar barraDisco = new ProgressBar(porcentajeUsado);
@@ -168,7 +170,7 @@ public class DashboardController implements Initializable {
                 barraDisco.getStyleClass().add("progress-bar-cyan");
 
                 VBox cajita = new VBox(5, cabecera, barraDisco);
-                cajita.setStyle("-fx-padding: 0 0 10 0;");
+                cajita.getStyleClass().add("disk-item");
                 vboxDisks.getChildren().add(cajita);
             }
         }

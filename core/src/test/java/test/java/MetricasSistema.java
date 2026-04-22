@@ -8,6 +8,7 @@ import oshi.hardware.HWDiskStore;
 import oshi.hardware.HardwareAbstractionLayer;
 import oshi.hardware.NetworkIF;
 import oshi.hardware.Sensors;
+import oshi.software.os.OperatingSystem;
 
 import java.util.List;
 
@@ -30,11 +31,11 @@ public class MetricasSistema {
         System.out.println("\n--- cpu ---");
         CentralProcessor cpuSistema = hardwareSistema.getProcessor();
         System.out.println(cpuSistema.getProcessorIdentifier().getName());
-        long[] ticksAnteriores = cpuSistema.getSystemCpuLoadTicks();
-        System.out.println("midiendo carga de cpu");
-        Thread.sleep(1000);
-        double cargaCpu = cpuSistema.getSystemCpuLoadBetweenTicks(ticksAnteriores) * 100;
-        System.out.printf("carga actual: %.1f%%%n", cargaCpu);
+       // long[] ticksAnteriores = cpuSistema.getSystemCpuLoadTicks();
+     //   System.out.println("midiendo carga de cpu");
+     //  Thread.sleep(1000);
+     //   double cargaCpu = cpuSistema.getSystemCpuLoadBetweenTicks(ticksAnteriores) * 100;
+      //  System.out.printf("carga actual: %.1f%%%n", cargaCpu);
 
         System.out.println("\n--- temperaturas ---");
         Sensors sensoresSistema = hardwareSistema.getSensors();
@@ -67,6 +68,9 @@ public class MetricasSistema {
                     bytesAGigas(discoSistema.getSize())
             );
         }
+        System.out.println("So");
+        OperatingSystem os = infoSistema.getOperatingSystem();
+        System.out.println(os.toString());
 
         System.out.println("\n--- interfaces de red ---");
         List<NetworkIF> redesSistema = hardwareSistema.getNetworkIFs();

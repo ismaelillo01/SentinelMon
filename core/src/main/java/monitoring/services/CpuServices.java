@@ -5,6 +5,8 @@ import oshi.hardware.CentralProcessor;
 import oshi.hardware.HardwareAbstractionLayer;
 import oshi.hardware.Sensors;
 
+import java.util.Locale;
+
 public class CpuServices {
     private static final String NO_DISPONIBLE = "No disponible";
     private final CentralProcessor cpu;
@@ -51,10 +53,14 @@ public class CpuServices {
         if (tempCpu <= 0) {
             return NO_DISPONIBLE;
         }
-        return "%.1f C".formatted(tempCpu);
+        //me toca decirle que estamos en estados unidos para que no me ponga una coma en el decimal, y evito parsearlo luego en le controller
+        return String.format(Locale.US, "%.1f", tempCpu);
     }
 
     //devuelve ventiladores
+    /*
+    recordar cuando funcione, crear clase propia ventiladores, y enviar a las infos
+    */
     public String getCpuFan() {
         int[] velocidadesVentilador = sens.getFanSpeeds();
         for (int velocidad : velocidadesVentilador) {
