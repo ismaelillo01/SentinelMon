@@ -1,5 +1,8 @@
 package monitoring.ui.controllers;
 
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Label;
@@ -9,11 +12,15 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Arc;
+import javafx.util.Duration;
 import monitoring.services.*;
 
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 public class DashboardController implements Initializable {
 
@@ -76,14 +83,50 @@ public class DashboardController implements Initializable {
     @FXML
     private VBox vboxDisks;
 
+    // servicios
+    private CpuServices miCpu;
+    private Ramservices miRam;
+    private GpuServices miGpu;
+    private DiskServices misDiscos;
+    private ExecutorService executor;
+    private Timeline timeline;
+
+    /*
+    * Todos los event -> algo son de la interface EventHandler.
+    * metodo que necesita JavaFx es handle();
+    * */
+
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        // servicios
-        CpuServices miCpu = new CpuServices();
-        Ramservices miRam = new Ramservices();
-        GpuServices miGpu = new GpuServices();
-        DiskServices misDiscos = new DiskServices();
+        miCpu = new CpuServices();
+        miRam = new Ramservices();
+        miGpu = new GpuServices();
+        misDiscos = new DiskServices();
 
+        ThreadFactory fHilo = new ThreadFactory() {
+            //definicion de como se crean los hilos
+            @Override
+            public Thread newThread(Runnable r) {
+                Thread hilo = new Thread(r, "sentinel-monitor");
+                hilo.setDaemon(true);
+                return hilo;
+            }
+        };
+        executor = Executors.newSingleThreadExecutor(fHilo); //ejecuta lo pesado en ese hilo. clave para que no se congele la interfaz grafica
+
+        cargarDatosEstaticos();
+
+        lanzarLectura(); //dinamicos
+
+        //temporizador de java fx de cada segundo llama a lanzarLectura();
+        timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> lanzarLectura()));
+        timeline.setCycleCount(timeline.INDEFINITE);//lo hace indefinidamente
+        timeline.play();
+    }
+
+    private void cargarDatosEstaticos(){
         // sistema operativo
         OsServices osServices = new OsServices();
         OsInfo osInfo = osServices.getInfo();
@@ -93,40 +136,18 @@ public class DashboardController implements Initializable {
         // cpu update
         CpuInfo datosCpu = miCpu.getInfo();
         lblCpuName.setText(datosCpu.getNombre());
-        double usoDeCpu = datosCpu.getUsoPorcentaje();
-        lblCpuLoad.setText(Math.round(usoDeCpu) + "%");
-        setArcProgress(arcCpu, usoDeCpu);
         lblCpuCores.setText(datosCpu.getNucleos() + " Nucleos");
-        lblCpuSpeed.setText(datosCpu.getVelocidad()+ " GHz");
-        lblCpuTemp.setText(datosCpu.getTemperatura()+ " Cº");
-        lblCpuFan.setText(datosCpu.getCpuFan());
-        // barra de prgreso maximo 100º de temperatura
-        try {
-            System.out.println(datosCpu.getTemperatura());
-            pbCpuTemp.setProgress(Double.parseDouble(datosCpu.getTemperatura()) / 100.0);
-        } catch (Exception e) {
-            pbCpuTemp.setProgress(0);
-        }
+        lblCpuSpeed.setText(datosCpu.getVelocidad());
 
         // ram update
         RamInfo datosRam = miRam.getInfo();
         lblRamModel.setText(datosRam.getModelo());
-        double usoDeRam = datosRam.getUsoPorcentaje();
-        lblRamLoad.setText(Math.round(usoDeRam) + "%");
-        setArcProgress(arcRam, usoDeRam);
         lblRamTotal.setText(datosRam.getTotalMemoryGB() + " GB");
-
-        double libre = 100 - usoDeRam;
-        lblRamFree.setText(Math.round(libre) + "%");
-        pbRamFree.setProgress(libre / 100.0);
-
-        lblRamUsedVal.setText(Math.round(usoDeRam) + "%");
-        pbRamUsed.setProgress(usoDeRam / 100.0);
 
         // gpu update
         List<GpuInfo> listaGpus = miGpu.getInfo();
         if (listaGpus != null && !listaGpus.isEmpty()) {
-            GpuInfo gpuPrincipal = listaGpus.get(0);
+            GpuInfo gpuPrincipal = listaGpus.getFirst();
             lblGpuName.setText(gpuPrincipal.getNombre());
             lblGpuVram.setText(gpuPrincipal.getTotalVramGB() + " GB");
             //oshi no puede leer esto
@@ -144,8 +165,65 @@ public class DashboardController implements Initializable {
             lblGpuFan.setText("No disponible");
             pbGpuTemp.setProgress(0.0);
         }
+    }
 
+    private void lanzarLectura(){
+        //crea la snapshot en un hilo separado. clave para que no se congele la UI
+        Task<DatosSnapshot> tarea = new Task<>(){
+            @Override
+            protected DatosSnapshot call(){
+                double cpuUso = miCpu.getUsagePercentage();
+                String cpuTemp = miCpu.getTemperatura();
+                String cpuFan = miCpu.getCpuFan();
+                double ramUso = miRam.getUsagePercentage();
+                List<DiscoInfo> discos = misDiscos.getSpace();
+                return new DatosSnapshot(cpuUso,cpuTemp,cpuFan,ramUso,discos);
+            }
+        };
+        //si lo consigue, recoge la snapshot y actualiza
+        tarea.setOnSucceeded(event -> {
+            DatosSnapshot datos = tarea.getValue();
+            actualizarUi(datos);
+        });
+        //si falla, salta excepcion
+        tarea.setOnFailed(event -> {
+            Throwable ex = tarea.getException();
+            System.err.println("Error leyendo metricas: " + ex.getMessage());
+        });
+        executor.submit(tarea);
+    }
+    //metodo pintar interfaz
+    private void actualizarUi(DatosSnapshot snap){
+        //cpu
+        lblCpuLoad.setText(Math.round(snap.cpuUso)+ "%");
+        setArcProgress(arcCpu, snap.cpuUso);
+        lblCpuTemp.setText(snap.cpuTemp + " Cº");
+        lblCpuFan.setText(snap.cpuFan);
+        try{
+            pbCpuTemp.setProgress(Double.parseDouble(snap.cpuTemp) / 100.0);
+        }catch (Exception e){
+            pbCpuTemp.setProgress(0);
+        }
+        //ram
+        double ramUso = snap.ramUso;
+        lblRamLoad.setText(Math.round(ramUso)+ "%");
+        setArcProgress(arcRam, ramUso);
+        double libre = 100 - ramUso;
+        lblRamFree.setText(Math.round(libre) + "%");
+        pbRamFree.setProgress(libre / 100.0);
+        lblRamUsedVal.setText(Math.round(ramUso) + "%");
+        pbRamUsed.setProgress(ramUso / 100.0);
+
+        //disco
+        //esto me permite poner un pen en mitad de ejecucion y que salga en la interfaz
+        actualizarDiscos(snap.discos);
+
+    }
+
+    private void actualizarDiscos(List<DiscoInfo> discos){
         // discos update
+        //borramos porque si no se duplican los discos cada segundo
+        vboxDisks.getChildren().clear();
         List<DiscoInfo> listadoDiscos = misDiscos.getSpace();
         for (DiscoInfo discoActual : listadoDiscos) {
             if (discoActual.getLetra() != null && !discoActual.getLetra().isEmpty()) {
@@ -176,8 +254,27 @@ public class DashboardController implements Initializable {
         }
     }
 
+
     private void setArcProgress(Arc arc, double percentage) {
+        //el arco permite 360º como me gusta que valla en sentido horario, tiene que tener valores negativos
         double length = (percentage / 100.0) * -360.0;
         arc.setLength(length);
     }
+    public void shutdown() {
+        if (timeline != null) timeline.stop();
+        if (executor != null) executor.shutdownNow();
+    }
+
+    //record en vez de crear una clase para enseñar datos, uso record. sobrescribe equals hascode tostring...
+    //porque no enseñan esto??????????????????????
+    /*
+    * ***** nota: en monitoreo refactorizar clases almacen por records
+    * */
+    private record DatosSnapshot(
+            double cpuUso,
+            String cpuTemp,
+            String cpuFan,
+            double ramUso,
+            List<DiscoInfo> discos
+    ) {}
 }
