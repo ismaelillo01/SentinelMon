@@ -91,6 +91,13 @@ public class DashboardController implements Initializable {
     private ExecutorService executor;
     private Timeline timeline;
 
+    /*
+    * Todos los event -> algo son de la interface EventHandler.
+    * metodo que necesita JavaFx es handle();
+    * */
+
+
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         miCpu = new CpuServices();
@@ -99,6 +106,7 @@ public class DashboardController implements Initializable {
         misDiscos = new DiskServices();
 
         ThreadFactory fHilo = new ThreadFactory() {
+            //definicion de como se crean los hilos
             @Override
             public Thread newThread(Runnable r) {
                 Thread hilo = new Thread(r, "sentinel-monitor");
@@ -106,14 +114,15 @@ public class DashboardController implements Initializable {
                 return hilo;
             }
         };
-        executor = Executors.newSingleThreadExecutor(fHilo);
+        executor = Executors.newSingleThreadExecutor(fHilo); //ejecuta lo pesado en ese hilo. clave para que no se congele la interfaz grafica
 
         cargarDatosEstaticos();
 
-        lanzarLectura();
+        lanzarLectura(); //dinamicos
 
+        //temporizador de java fx de cada segundo llama a lanzarLectura();
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> lanzarLectura()));
-        timeline.setCycleCount(timeline.INDEFINITE);
+        timeline.setCycleCount(timeline.INDEFINITE);//lo hace indefinidamente
         timeline.play();
     }
 
@@ -138,7 +147,7 @@ public class DashboardController implements Initializable {
         // gpu update
         List<GpuInfo> listaGpus = miGpu.getInfo();
         if (listaGpus != null && !listaGpus.isEmpty()) {
-            GpuInfo gpuPrincipal = listaGpus.get(0);
+            GpuInfo gpuPrincipal = listaGpus.getFirst();
             lblGpuName.setText(gpuPrincipal.getNombre());
             lblGpuVram.setText(gpuPrincipal.getTotalVramGB() + " GB");
             //oshi no puede leer esto
@@ -159,6 +168,7 @@ public class DashboardController implements Initializable {
     }
 
     private void lanzarLectura(){
+        //crea la snapshot en un hilo separado. clave para que no se congele la UI
         Task<DatosSnapshot> tarea = new Task<>(){
             @Override
             protected DatosSnapshot call(){
@@ -170,16 +180,19 @@ public class DashboardController implements Initializable {
                 return new DatosSnapshot(cpuUso,cpuTemp,cpuFan,ramUso,discos);
             }
         };
+        //si lo consigue, recoge la snapshot y actualiza
         tarea.setOnSucceeded(event -> {
             DatosSnapshot datos = tarea.getValue();
             actualizarUi(datos);
         });
+        //si falla, salta excepcion
         tarea.setOnFailed(event -> {
             Throwable ex = tarea.getException();
             System.err.println("Error leyendo metricas: " + ex.getMessage());
         });
         executor.submit(tarea);
     }
+    //metodo pintar interfaz
     private void actualizarUi(DatosSnapshot snap){
         //cpu
         lblCpuLoad.setText(Math.round(snap.cpuUso)+ "%");
@@ -202,17 +215,14 @@ public class DashboardController implements Initializable {
         pbRamUsed.setProgress(ramUso / 100.0);
 
         //disco
+        //esto me permite poner un pen en mitad de ejecucion y que salga en la interfaz
         actualizarDiscos(snap.discos);
 
     }
 
-
-
-
-
-
     private void actualizarDiscos(List<DiscoInfo> discos){
         // discos update
+        //borramos porque si no se duplican los discos cada segundo
         vboxDisks.getChildren().clear();
         List<DiscoInfo> listadoDiscos = misDiscos.getSpace();
         for (DiscoInfo discoActual : listadoDiscos) {
@@ -246,6 +256,7 @@ public class DashboardController implements Initializable {
 
 
     private void setArcProgress(Arc arc, double percentage) {
+        //el arco permite 360º como me gusta que valla en sentido horario, tiene que tener valores negativos
         double length = (percentage / 100.0) * -360.0;
         arc.setLength(length);
     }
@@ -254,6 +265,11 @@ public class DashboardController implements Initializable {
         if (executor != null) executor.shutdownNow();
     }
 
+    //record en vez de crear una clase para enseñar datos, uso record. sobrescribe equals hascode tostring...
+    //porque no enseñan esto??????????????????????
+    /*
+    * ***** nota: en monitoreo refactorizar clases almacen por records
+    * */
     private record DatosSnapshot(
             double cpuUso,
             String cpuTemp,
