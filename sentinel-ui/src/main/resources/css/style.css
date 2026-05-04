@@ -163,6 +163,10 @@
     -fx-background-color: #3b4570;
 }
 
+.btn-icon SVGPath {
+    -fx-fill: white;
+}
+
 
 .btn-outline {
     -fx-background-color: transparent;
@@ -213,4 +217,38 @@
 
 .disk-item {
     -fx-padding: 0 0 10 0;
+}
+
+.settings-sidebar {
+    -fx-background-color: #1a1e2f;
+    -fx-padding: 30 20 20 20;
+    -fx-spacing: 15;
+    -fx-border-color: #2b304c;
+    -fx-border-width: 0 0 0 1;
+}
+
+.combo-theme {
+    -fx-background-color: #262940;
+    -fx-border-color: #4a5585;
+    -fx-border-radius: 5;
+    -fx-text-fill: white;
+}
+
+.combo-theme .list-cell {
+    -fx-text-fill: white;
+    -fx-background-color: transparent;
+}
+
+.combo-theme .list-view {
+    -fx-background-color: #1a1e2f;
+    -fx-border-color: #4a5585;
+}
+
+.combo-theme .list-cell:filled:hover {
+    -fx-background-color: #3b4570;
+}
+
+.combo-theme .list-cell:filled:selected {
+    -fx-background-color: #1dc2bb;
+    -fx-text-fill: #1a1e2f;
 }

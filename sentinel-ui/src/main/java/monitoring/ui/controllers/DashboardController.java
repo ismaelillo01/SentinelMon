@@ -5,6 +5,8 @@ import javafx.animation.Timeline;
 import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.HBox;
@@ -12,8 +14,15 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Arc;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.fxml.FXMLLoader;
+import javafx.event.ActionEvent;
 import javafx.util.Duration;
 import monitoring.services.*;
+import monitoring.ui.ThemeManager;
 
 import java.net.URL;
 import java.util.List;
@@ -26,6 +35,18 @@ public class DashboardController implements Initializable {
 
     @FXML
     private Label lblSystemInfo;
+
+    // Navigation and Settings
+    @FXML
+    private Button btnSettings;
+    @FXML
+    private Button btnStore;
+    @FXML
+    private VBox settingsPanel;
+    @FXML
+    private ComboBox<String> comboTheme;
+    @FXML
+    private ComboBox<String> comboFont;
 
     // CPU
     @FXML
@@ -92,11 +113,9 @@ public class DashboardController implements Initializable {
     private Timeline timeline;
 
     /*
-    * Todos los event -> algo son de la interface EventHandler.
-    * metodo que necesita JavaFx es handle();
-    * */
-
-
+     * Todos los event -> algo son de la interface EventHandler.
+     * metodo que necesita JavaFx es handle();
+     */
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -106,7 +125,7 @@ public class DashboardController implements Initializable {
         misDiscos = new DiskServices();
 
         ThreadFactory fHilo = new ThreadFactory() {
-            //definicion de como se crean los hilos
+            // definicion de como se crean los hilos
             @Override
             public Thread newThread(Runnable r) {
                 Thread hilo = new Thread(r, "sentinel-monitor");
@@ -114,19 +133,32 @@ public class DashboardController implements Initializable {
                 return hilo;
             }
         };
-        executor = Executors.newSingleThreadExecutor(fHilo); //ejecuta lo pesado en ese hilo. clave para que no se congele la interfaz grafica
+        executor = Executors.newSingleThreadExecutor(fHilo); // ejecuta lo pesado en ese hilo. clave para que no se
+                                                             // congele la interfaz grafica
+
+        // configurar combobox de temas
+        if (comboTheme != null) {
+            comboTheme.getItems().addAll("Oscuro", "Claro");
+            comboTheme.setValue(ThemeManager.currentTheme);
+        }
+
+        // configurar combobox de fuentes
+        if (comboFont != null) {
+            comboFont.getItems().addAll("Predeterminada", "Arial", "OpenDyslexic", "Verdana");
+            comboFont.setValue(ThemeManager.currentFont);
+        }
 
         cargarDatosEstaticos();
 
-        lanzarLectura(); //dinamicos
+        lanzarLectura(); // dinamicos
 
-        //temporizador de java fx de cada segundo llama a lanzarLectura();
+        // temporizador de java fx de cada segundo llama a lanzarLectura();
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> lanzarLectura()));
-        timeline.setCycleCount(timeline.INDEFINITE);//lo hace indefinidamente
+        timeline.setCycleCount(timeline.INDEFINITE);// lo hace indefinidamente
         timeline.play();
     }
 
-    private void cargarDatosEstaticos(){
+    private void cargarDatosEstaticos() {
         // sistema operativo
         OsServices osServices = new OsServices();
         OsInfo osInfo = osServices.getInfo();
@@ -150,7 +182,7 @@ public class DashboardController implements Initializable {
             GpuInfo gpuPrincipal = listaGpus.getFirst();
             lblGpuName.setText(gpuPrincipal.getNombre());
             lblGpuVram.setText(gpuPrincipal.getTotalVramGB() + " GB");
-            //oshi no puede leer esto
+            // oshi no puede leer esto
             lblGpuLoad.setText("Por dev");
             setArcProgress(arcGpu, 0);
             lblGpuTemp.setText("Por dev");
@@ -167,46 +199,47 @@ public class DashboardController implements Initializable {
         }
     }
 
-    private void lanzarLectura(){
-        //crea la snapshot en un hilo separado. clave para que no se congele la UI
-        Task<DatosSnapshot> tarea = new Task<>(){
+    private void lanzarLectura() {
+        // crea la snapshot en un hilo separado. clave para que no se congele la UI
+        Task<DatosSnapshot> tarea = new Task<>() {
             @Override
-            protected DatosSnapshot call(){
+            protected DatosSnapshot call() {
                 double cpuUso = miCpu.getUsagePercentage();
                 String cpuTemp = miCpu.getTemperatura();
                 String cpuFan = miCpu.getCpuFan();
                 double ramUso = miRam.getUsagePercentage();
                 List<DiscoInfo> discos = misDiscos.getSpace();
-                return new DatosSnapshot(cpuUso,cpuTemp,cpuFan,ramUso,discos);
+                return new DatosSnapshot(cpuUso, cpuTemp, cpuFan, ramUso, discos);
             }
         };
-        //si lo consigue, recoge la snapshot y actualiza
+        // si lo consigue, recoge la snapshot y actualiza
         tarea.setOnSucceeded(event -> {
             DatosSnapshot datos = tarea.getValue();
             actualizarUi(datos);
         });
-        //si falla, salta excepcion
+        // si falla, salta excepcion
         tarea.setOnFailed(event -> {
             Throwable ex = tarea.getException();
             System.err.println("Error leyendo metricas: " + ex.getMessage());
         });
         executor.submit(tarea);
     }
-    //metodo pintar interfaz
-    private void actualizarUi(DatosSnapshot snap){
-        //cpu
-        lblCpuLoad.setText(Math.round(snap.cpuUso)+ "%");
+
+    // metodo pintar interfaz
+    private void actualizarUi(DatosSnapshot snap) {
+        // cpu
+        lblCpuLoad.setText(Math.round(snap.cpuUso) + "%");
         setArcProgress(arcCpu, snap.cpuUso);
         lblCpuTemp.setText(snap.cpuTemp + " Cº");
         lblCpuFan.setText(snap.cpuFan);
-        try{
+        try {
             pbCpuTemp.setProgress(Double.parseDouble(snap.cpuTemp) / 100.0);
-        }catch (Exception e){
+        } catch (Exception e) {
             pbCpuTemp.setProgress(0);
         }
-        //ram
+        // ram
         double ramUso = snap.ramUso;
-        lblRamLoad.setText(Math.round(ramUso)+ "%");
+        lblRamLoad.setText(Math.round(ramUso) + "%");
         setArcProgress(arcRam, ramUso);
         double libre = 100 - ramUso;
         lblRamFree.setText(Math.round(libre) + "%");
@@ -214,15 +247,15 @@ public class DashboardController implements Initializable {
         lblRamUsedVal.setText(Math.round(ramUso) + "%");
         pbRamUsed.setProgress(ramUso / 100.0);
 
-        //disco
-        //esto me permite poner un pen en mitad de ejecucion y que salga en la interfaz
+        // disco
+        // esto me permite poner un pen en mitad de ejecucion y que salga en la interfaz
         actualizarDiscos(snap.discos);
 
     }
 
-    private void actualizarDiscos(List<DiscoInfo> discos){
+    private void actualizarDiscos(List<DiscoInfo> discos) {
         // discos update
-        //borramos porque si no se duplican los discos cada segundo
+        // borramos porque si no se duplican los discos cada segundo
         vboxDisks.getChildren().clear();
         List<DiscoInfo> listadoDiscos = misDiscos.getSpace();
         for (DiscoInfo discoActual : listadoDiscos) {
@@ -254,27 +287,72 @@ public class DashboardController implements Initializable {
         }
     }
 
-
     private void setArcProgress(Arc arc, double percentage) {
-        //el arco permite 360º como me gusta que valla en sentido horario, tiene que tener valores negativos
+        // el arco permite 360º como me gusta que valla en sentido horario, tiene que
+        // tener valores negativos
         double length = (percentage / 100.0) * -360.0;
         arc.setLength(length);
     }
+
     public void shutdown() {
-        if (timeline != null) timeline.stop();
-        if (executor != null) executor.shutdownNow();
+        if (timeline != null)
+            timeline.stop();
+        if (executor != null)
+            executor.shutdownNow();
     }
 
-    //record en vez de crear una clase para enseñar datos, uso record. sobrescribe equals hascode tostring...
-    //porque no enseñan esto??????????????????????
+    // --- Navegacion y Ajustes ---
+
+    @FXML
+    public void handleSettingsClick(ActionEvent event) {
+        boolean isVisible = settingsPanel.isVisible();
+        settingsPanel.setVisible(!isVisible);
+        settingsPanel.setManaged(!isVisible);
+    }
+
+    @FXML
+    public void handleSettingsSave(ActionEvent event) {
+        ThemeManager.currentTheme = comboTheme.getValue();
+        ThemeManager.currentFont = comboFont.getValue();
+        ThemeManager.applyTheme((Parent) lblSystemInfo.getScene().getRoot());
+    }
+
+    @FXML
+    public void handleSettingsBack(ActionEvent event) {
+        settingsPanel.setVisible(false);
+        settingsPanel.setManaged(false);
+    }
+
+    @FXML
+    public void handleStoreClick(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Store.fxml"));
+            Parent root = loader.load();
+
+            // parar los timelines/hilos del dashboard antes de cambiar
+            shutdown();
+
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root, stage.getScene().getWidth(), stage.getScene().getHeight());
+            ThemeManager.applyTheme(root);
+            stage.setScene(scene);
+        } catch (Exception e) {
+            System.err.println("Error al cargar la tienda: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+
+    // record en vez de crear una clase para enseñar datos, uso record. sobrescribe
+    // equals hascode tostring...
+    // porque no enseñan esto??????????????????????
     /*
-    * ***** nota: en monitoreo refactorizar clases almacen por records
-    * */
+     * ***** nota: en monitoreo refactorizar clases almacen por records
+     */
     private record DatosSnapshot(
             double cpuUso,
             String cpuTemp,
             String cpuFan,
             double ramUso,
-            List<DiscoInfo> discos
-    ) {}
+            List<DiscoInfo> discos) {
+    }
 }

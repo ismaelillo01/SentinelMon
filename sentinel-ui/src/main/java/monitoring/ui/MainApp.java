@@ -17,6 +17,7 @@ public class MainApp extends Application {
         this.controller = loader.getController();
 
         Scene scene = new Scene(root, 1000, 700);
+        ThemeManager.applyTheme(root);
         escenario.setOnCloseRequest(e -> controller.shutdown());
         escenario.setTitle("SentinelMon");
         escenario.setScene(scene);
