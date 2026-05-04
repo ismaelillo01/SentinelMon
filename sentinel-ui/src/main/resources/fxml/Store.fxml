@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.*?>
+
+<BorderPane stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoring.ui.controllers.StoreController">
+
+
+    <left>
+        <VBox prefWidth="250" spacing="20" styleClass="sidebar">
+            <Label styleClass="title-label" text="SENTINELMON" />
+
+            <Button fx:id="btnMenu" onAction="#handleMenuClick" styleClass="menu-btn" text="MENU" />
+            <Button styleClass="menu-btn" text="VER MAS" />
+            <Button styleClass="menu-btn" text="CONTACTANOS" />
+            <Button styleClass="menu-btn" text="AYUDA" />
+            <Region VBox.vgrow="ALWAYS" />
+        </VBox>
+    </left>
+
+
+    <center>
+        <VBox>
+
+            <HBox alignment="CENTER_RIGHT" prefHeight="60" spacing="15" styleClass="top-bar">
+                <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" />
+                <Label styleClass="system-info-label" text="Equipo: DESKTOP-001   Sistema: Windows 11 Pro   Version app: 1.0.0   Estado: " />
+                <Label styleClass="status-label" text="Operativo" />
+                <Region prefWidth="30" />
+                <Button styleClass="btn-outline, active" text="MODULOS / APPS" />
+            </HBox>
+
+            <ScrollPane fitToWidth="true" styleClass="scroll-transparent">
+                <VBox spacing="20" styleClass="content-grid">
+                    <Label styleClass="metric-value-large" text="Módulos y Aplicaciones" />
+                    
+                    <FlowPane hgap="20" vgap="20" fx:id="appsContainer">
+                    </FlowPane>
+                    
+                </VBox>
+            </ScrollPane>
+        </VBox>
+    </center>
+
+</BorderPane>
