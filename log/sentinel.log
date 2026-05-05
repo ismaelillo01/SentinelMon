@@ -1,0 +1,22 @@
+[2026-05-05 13:28:51] [INFO] Plugings cargados1
+[2026-05-05 13:29:23] [INFO] Jar copiado a plugins\hello-plugin\hello-plugin-1.0.0.jar
+[2026-05-05 13:33:03] [INFO] Plugings cargados1
+[2026-05-05 13:33:34] [INFO] Jar copiado a plugins\hello-plugin\hello-plugin-1.0.0.jar
+[2026-05-05 13:39:48] [INFO] Plugings cargados1
+[2026-05-05 13:40:48] [INFO] Jar copiado a plugins\hello-plugin\hello-plugin-1.0.0.jar
+[2026-05-05 13:40:48] [INFO] Pluging 'hello-plugin' estado FAILED
+[2026-05-05 13:41:14] [SEVERE] Error instalando pluging plugins\hello-plugin\hello-plugin-1.0.0.jar: El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso
+[2026-05-05 13:41:19] [INFO] Plugin eliminado: hello-plugin
+[2026-05-05 13:41:29] [INFO] Jar copiado a plugins\hello-plugin\hello-plugin-1.0.0.jar
+[2026-05-05 13:41:29] [INFO] Pluging 'hello-plugin' estado FAILED
+[2026-05-05 13:46:39] [INFO] Plugings cargados1
+[2026-05-05 13:47:12] [INFO] Jar copiado a plugins\hello-plugin\hello-plugin-1.0.0.jar
+[2026-05-05 13:47:12] [INFO] Pluging 'hello-plugin' estado STARTED
+[2026-05-05 13:49:16] [INFO] Plugings cargados1
+[2026-05-05 13:50:09] [INFO] Jar copiado a plugins\hello-plugin\hello-plugin-1.0.0.jar
+[2026-05-05 13:50:09] [INFO] Pluging 'hello-plugin' estado STARTED
+[2026-05-05 13:50:50] [INFO] Plugings cargados1
+[2026-05-05 13:51:23] [INFO] Jar copiado a plugins\hello-plugin\hello-plugin-1.0.0.jar
+[2026-05-05 13:51:23] [INFO] Pluging 'hello-plugin' estado STARTED
+[2026-05-05 13:51:54] [SEVERE] Error instalando pluging plugins\hello-plugin\hello-plugin-1.0.0.jar: El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso
+[2026-05-05 13:52:02] [INFO] Plugin eliminado: hello-plugin

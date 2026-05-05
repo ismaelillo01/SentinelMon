@@ -91,11 +91,15 @@ public class StoreController implements Initializable {
         Region espcaio = new Region();
         VBox.setVgrow(espcaio, Priority.ALWAYS);
         //botones
-        HBox botones = new HBox(10);
-        Button btnDesinstalar = new Button("Desintalar");
+
+        Button btnDesinstalar = new Button("Desinstalar");
         btnDesinstalar.getStyleClass().add("btn-outline");
         btnDesinstalar.setOnAction(event -> desinstalarPlugin(meta.id()));
-        botones.getChildren().addAll(lblNombre,lblDesc,lblInfo,lblEstado,espcaio,botones);
+
+        HBox botones = new HBox(10);
+        botones.getChildren().add(btnDesinstalar);
+
+        card.getChildren().addAll(lblNombre, lblDesc, lblInfo, lblEstado, espcaio, botones);
         return card;
     }
 

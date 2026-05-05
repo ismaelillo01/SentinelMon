@@ -298,7 +298,7 @@ public class DashboardController implements Initializable {
         if (timeline != null)
             timeline.stop();
         if (executor != null)
-            executor.shutdownNow();
+            executor.shutdown(); // evitaa InterruptedException
     }
 
     // --- Navegacion y Ajustes ---
