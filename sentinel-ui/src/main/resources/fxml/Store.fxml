@@ -5,13 +5,13 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
 
-<BorderPane stylesheets="@../css/style.css" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="monitoring.ui.controllers.StoreController">
-
-
+<BorderPane stylesheets="@../css/style.css"
+            xmlns="http://javafx.com/javafx/17.0.12"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="monitoring.ui.controllers.StoreController">
     <left>
         <VBox prefWidth="250" spacing="20" styleClass="sidebar">
             <Label styleClass="title-label" text="SENTINELMON" />
-
             <Button fx:id="btnMenu" onAction="#handleMenuClick" styleClass="menu-btn" text="MENU" />
             <Button styleClass="menu-btn" text="VER MAS" />
             <Button styleClass="menu-btn" text="CONTACTANOS" />
@@ -19,26 +19,28 @@
             <Region VBox.vgrow="ALWAYS" />
         </VBox>
     </left>
-
-
     <center>
         <VBox>
-
             <HBox alignment="CENTER_RIGHT" prefHeight="60" spacing="15" styleClass="top-bar">
                 <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" />
-                <Label styleClass="system-info-label" text="Equipo: DESKTOP-001   Sistema: Windows 11 Pro   Version app: 1.0.0   Estado: " />
+                <Label styleClass="system-info-label"
+                       text="Equipo: DESKTOP-001   Sistema: Windows 11   Version app: 1.0.0   Estado: " />
                 <Label styleClass="status-label" text="Operativo" />
                 <Region prefWidth="30" />
                 <Button styleClass="btn-outline, active" text="MODULOS / APPS" />
             </HBox>
-
-            <ScrollPane fitToWidth="true" styleClass="scroll-transparent">
+            <ScrollPane fitToWidth="true" styleClass="scroll-transparent" VBox.vgrow="ALWAYS">
                 <VBox spacing="20" styleClass="content-grid">
-                    <Label styleClass="metric-value-large" text="Módulos y Aplicaciones" />
-                    
-                    <FlowPane hgap="20" vgap="20" fx:id="appsContainer">
-                    </FlowPane>
-                    
+                    <HBox alignment="CENTER_LEFT" spacing="20">
+                        <Label styleClass="metric-value-large" text="Módulos y Aplicaciones" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button onAction="#handleInstalarJar"
+                                styleClass="menu-btn"
+                                text="+ Instalar JAR" />
+                    </HBox>
+                    <Label styleClass="metric-label"
+                           text="Los módulos instalados amplían las capacidades de SentinelMon. Instala un JAR de plugin compatible para añadirlo." />
+                    <FlowPane hgap="20" vgap="20" fx:id="appsContainer" />
                 </VBox>
             </ScrollPane>
         </VBox>

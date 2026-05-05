@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import monitoring.plugins.SentinelPluginManager;
 import monitoring.ui.controllers.DashboardController;
 
 
@@ -12,6 +13,7 @@ public class MainApp extends Application {
     private DashboardController controller;
     @Override
     public void start(Stage escenario) throws Exception {
+        SentinelPluginManager.getInstance().cargarTodos();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Dashboard.fxml"));
         Parent root = loader.load();
         this.controller = loader.getController();
@@ -19,6 +21,7 @@ public class MainApp extends Application {
         Scene scene = new Scene(root, 1000, 700);
         ThemeManager.applyTheme(root);
         escenario.setOnCloseRequest(e -> controller.shutdown());
+        SentinelPluginManager.getInstance().detenerTodos();
         escenario.setTitle("SentinelMon");
         escenario.setScene(scene);
         escenario.show();

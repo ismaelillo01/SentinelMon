@@ -25,7 +25,7 @@ public class ThemeManager {
         } else if ("Verdana".equals(currentFont)) {
             root.setStyle("-fx-font-family: 'Verdana';");
         } else {
-            root.setStyle(""); // vuelve a Predeterminada
+            root.setStyle(""); // vuelve a la predeterminada de JavaFX
         }
     }
 }
