@@ -20,3 +20,8 @@
 [2026-05-05 13:51:23] [INFO] Pluging 'hello-plugin' estado STARTED
 [2026-05-05 13:51:54] [SEVERE] Error instalando pluging plugins\hello-plugin\hello-plugin-1.0.0.jar: El proceso no tiene acceso al archivo porque está siendo utilizado por otro proceso
 [2026-05-05 13:52:02] [INFO] Plugin eliminado: hello-plugin
+[2026-05-06 10:57:24] [INFO] Plugings cargados1
+[2026-05-06 10:57:53] [INFO] Jar copiado a plugins\hello-plugin\hello-plugin-1.0.0.jar
+[2026-05-06 10:57:53] [INFO] Pluging 'hello-plugin' estado STARTED
+[2026-05-06 10:57:57] [INFO] Plugin eliminado: hello-plugin
+[2026-05-07 09:19:32] [INFO] Plugings cargados1

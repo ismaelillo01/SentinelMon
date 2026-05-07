@@ -5,6 +5,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import monitoring.bd.BD;
 import monitoring.plugins.SentinelPluginManager;
 import monitoring.ui.controllers.DashboardController;
 
@@ -13,6 +14,7 @@ public class MainApp extends Application {
     private DashboardController controller;
     @Override
     public void start(Stage escenario) throws Exception {
+        BD.init();
         SentinelPluginManager.getInstance().cargarTodos();
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Dashboard.fxml"));
         Parent root = loader.load();
