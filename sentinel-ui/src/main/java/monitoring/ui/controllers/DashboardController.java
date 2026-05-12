@@ -22,7 +22,9 @@ import javafx.fxml.FXMLLoader;
 import javafx.event.ActionEvent;
 import javafx.util.Duration;
 import monitoring.services.*;
+import monitoring.plugins.SentinelPluginManager;
 import monitoring.ui.ThemeManager;
+import org.api.SentinelExtension;
 
 import java.net.URL;
 import java.util.List;
@@ -104,6 +106,10 @@ public class DashboardController implements Initializable {
     @FXML
     private VBox vboxDisks;
 
+    // contenedor de plugins
+    @FXML
+    private VBox pluginsContainer;
+
     // servicios
     private CpuServices miCpu;
     private Ramservices miRam;
@@ -149,6 +155,7 @@ public class DashboardController implements Initializable {
         }
 
         cargarDatosEstaticos();
+        cargarPlugins(); // cargar UI de plugins activos
 
         lanzarLectura(); // dinamicos
 
@@ -299,6 +306,22 @@ public class DashboardController implements Initializable {
             timeline.stop();
         if (executor != null)
             executor.shutdown(); // evitaa InterruptedException
+    }
+
+    // ── Carga de UI de plugins ──
+    private void cargarPlugins() {
+        if (pluginsContainer == null) return;
+        List<SentinelExtension> extensiones = SentinelPluginManager.getInstance().getExtensionesActivas();
+        for (SentinelExtension ext : extensiones) {
+            try {
+                Node componente = ext.getUiComponent();
+                if (componente != null) {
+                    pluginsContainer.getChildren().add(componente);
+                }
+            } catch (Exception e) {
+                System.err.println("Error cargando UI del plugin '" + ext.getName() + "': " + e.getMessage());
+            }
+        }
     }
 
     // --- Navegacion y Ajustes ---

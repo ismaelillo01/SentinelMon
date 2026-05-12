@@ -40,6 +40,7 @@
 
 
             <ScrollPane fitToWidth="true" styleClass="scroll-transparent">
+                <VBox spacing="20">
                 <GridPane hgap="20" styleClass="content-grid" vgap="20">
                     <columnConstraints>
                         <ColumnConstraints percentWidth="50" />
@@ -204,6 +205,8 @@
                   <RowConstraints />
                </rowConstraints>
                 </GridPane>
+                <VBox fx:id="pluginsContainer" spacing="15" styleClass="content-grid" />
+                </VBox>
             </ScrollPane>
         </VBox>
     </center>

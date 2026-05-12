@@ -1,5 +1,6 @@
 package monitoring.plugins;
 
+import monitoring.bd.PluginDAO;
 import monitoring.logs.SentinelLogs;
 import org.api.SentinelExtension;
 import org.pf4j.DefaultPluginManager;
@@ -7,6 +8,7 @@ import org.pf4j.PluginManager;
 import org.pf4j.PluginState;
 import org.pf4j.PluginWrapper;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -48,7 +50,27 @@ public class SentinelPluginManager {
     public void cargarTodos() {
         pf4j.loadPlugins();
         pf4j.startPlugins();
-        SentinelLogs.info("Plugings cargados" + pf4j.getPlugins().size());
+
+        // cargamos los plugins guardados en la BD que pf4j no haya detectado
+        List<PluginDAO.PluginBD> pluginsBD = PluginDAO.listarTodos();
+        for (PluginDAO.PluginBD pluginBD : pluginsBD) {
+            // si ya esta cargado no hacemos nada
+            if (pf4j.getPlugin(pluginBD.id()) != null) {
+                continue;
+            }
+            // si no esta cargado, lo cargamos manualmente con la ruta guardada en BD
+            Path jarPath = Paths.get(pluginBD.jarPath());
+            if (Files.exists(jarPath)) {
+                String pluginId = pf4j.loadPlugin(jarPath);
+                if (pluginId != null) {
+                    pf4j.startPlugin(pluginId);
+                    SentinelLogs.info("Plugin cargado desde BD: " + pluginId);
+                }
+            } else {
+                SentinelLogs.advertencia("JAR no encontrado para plugin '" + pluginBD.id() + "': " + jarPath);
+            }
+        }
+        SentinelLogs.info("Plugings cargados: " + pf4j.getPlugins().size());
     }
 
     // parar y descargar de memoria
@@ -93,6 +115,15 @@ public class SentinelPluginManager {
 
             PluginState estado = pf4j.startPlugin(pluginId);
             SentinelLogs.info("Pluging '" + pluginId + "' estado " + estado);
+
+            // si se ha iniciado correctamente, lo guardamos en la BD
+            if (PluginState.STARTED.equals(estado)) {
+                String desc = meta.descripcion() != null ? meta.descripcion() : "";
+                String prov = meta.proveedor() != null ? meta.proveedor() : "";
+                String ver = meta.version() != null ? meta.version() : "";
+                PluginDAO.guardar(meta.id(), ver, desc, prov, destino.toString());
+            }
+
             return PluginState.STARTED.equals(estado);
 
         } catch (IOException e) {
@@ -114,22 +145,42 @@ public class SentinelPluginManager {
         pf4j.unloadPlugin(pluginId);// descargar de memorai
         try {
             // Borramos la subcarpeta y todo su contenido
-            if (Files.exists(pluginDir)) {
-                Files.walk(pluginDir)
-                        .sorted(java.util.Comparator.reverseOrder())
-                        .forEach(p -> {
-                            try {
-                                Files.delete(p);
-                            } catch (IOException ignored) {
-                            }
-                        });
+            Path carpetaPlugin = pluginDir.getParent();
+            if (carpetaPlugin == null) {
+                carpetaPlugin = pluginDir;
             }
+            if (Files.exists(carpetaPlugin)) {
+                borrarCarpetaRecursivo(carpetaPlugin.toFile());
+            }
+
+            // eliminamos el plugin de la BD
+            PluginDAO.eliminar(pluginId);
+
             SentinelLogs.info("Plugin eliminado: " + pluginId);
             return true;
-        } catch (IOException e) {
+        } catch (Exception e) {
             SentinelLogs.error("(desinstalando) Error borrando plugin: " + e.getMessage());
             return false;
         }
+    }
+
+    // borra una carpeta y todo lo que haya dentro de forma recursiva
+    private void borrarCarpetaRecursivo(File carpeta) {
+        if (carpeta == null || !carpeta.exists()) {
+            return;
+        }
+        File[] contenido = carpeta.listFiles();
+        if (contenido != null) {
+            for (File archivo : contenido) {
+                if (archivo.isDirectory()) {
+                    borrarCarpetaRecursivo(archivo);
+                } else {
+                    archivo.delete();
+                }
+            }
+        }
+        // al final borramos la carpeta ya vacia
+        carpeta.delete();
     }
 
     public boolean estaInstalado(String pluginId) {
@@ -163,6 +214,7 @@ public class SentinelPluginManager {
     }
 
     // leemos metadatos de todos los jar
+    // recorre las subcarpetas de plugins/ buscando JARs
     public List<PluginMetadatos> escanearPluginsInstalados() {
         List<PluginMetadatos> result = new ArrayList<>();
         try {
@@ -171,27 +223,39 @@ public class SentinelPluginManager {
             }
             // estructura plugins/<plugin-id>/<plugin.jar>
             // itero subcarpetas y cogemos el primer JAR de cada una
-            Files.list(PLUGINGS_PATH)
-                    .filter(Files::isDirectory)
-                    .forEach(subDir -> {
-                        try {
-                            Files.list(subDir)
-                                    .filter(p -> p.toString().endsWith(".jar"))
-                                    .findFirst()
-                                    .ifPresent(jar -> {
-                                        PluginMetadatos meta = leerMetadatos(jar);
-                                        if (meta != null) {
-                                            result.add(meta);
-                                        }
-                                    });
-                        } catch (IOException e) {
-                            SentinelLogs.error("Error leyendo subcarpeta: " + e.getMessage());
+            File[] subcarpetas = PLUGINGS_PATH.toFile().listFiles();
+            if (subcarpetas == null) {
+                return result;
+            }
+            for (File subDir : subcarpetas) {
+                if (!subDir.isDirectory()) {
+                    continue;
+                }
+                File[] archivos = subDir.listFiles();
+                if (archivos == null) {
+                    continue;
+                }
+                // buscamos el primer .jar en la subcarpeta
+                for (File archivo : archivos) {
+                    if (archivo.getName().endsWith(".jar")) {
+                        PluginMetadatos meta = leerMetadatos(archivo.toPath());
+                        if (meta != null) {
+                            result.add(meta);
                         }
-                    });
-        } catch (IOException e) {
+                        break; // solo cogemos el primer jar
+                    }
+                }
+            }
+        } catch (Exception e) {
             SentinelLogs.error("Error escaneando metadatos de todos los plugins: " + e.getMessage());
         }
         return result;
+    }
+
+    // devuelve los plugins guardados en la BD
+    // sirve para que al abrir la tienda aparezcan los instalados
+    public List<PluginDAO.PluginBD> getPluginsGuardados() {
+        return PluginDAO.listarTodos();
     }
 
     private void crearDirSiNoExiste() {

@@ -25,3 +25,40 @@
 [2026-05-06 10:57:53] [INFO] Pluging 'hello-plugin' estado STARTED
 [2026-05-06 10:57:57] [INFO] Plugin eliminado: hello-plugin
 [2026-05-07 09:19:32] [INFO] Plugings cargados1
+[2026-05-12 09:18:23] [INFO] Plugings cargados1
+[2026-05-12 09:18:59] [INFO] Jar copiado a plugins\sentinel-alert\sentinel-alert-1.0.0.jar
+[2026-05-12 09:18:59] [INFO] Pluging 'sentinel-alert' estado STARTED
+[2026-05-12 09:20:02] [INFO] Plugings cargados1
+[2026-05-12 09:20:35] [INFO] Jar copiado a plugins\sentinel-alert\sentinel-alert-1.0.0.jar
+[2026-05-12 09:20:35] [INFO] Pluging 'sentinel-alert' estado STARTED
+[2026-05-12 09:22:14] [INFO] Plugings cargados1
+[2026-05-12 09:26:13] [INFO] Plugings cargados1
+[2026-05-12 09:26:33] [INFO] Jar copiado a plugins\sentinel-alert\sentinel-alert-1.0.0.jar
+[2026-05-12 09:26:33] [INFO] Pluging 'sentinel-alert' estado STARTED
+[2026-05-12 09:27:39] [INFO] Plugings cargados1
+[2026-05-12 09:28:30] [INFO] Jar copiado a plugins\sentinel-alert\sentinel-alert-1.0.0.jar
+[2026-05-12 09:28:30] [INFO] Pluging 'sentinel-alert' estado STARTED
+[2026-05-12 09:54:25] [INFO] Plugings cargados1
+[2026-05-12 09:55:13] [INFO] Jar copiado a plugins\sentinel-alert\sentinel-alert-1.0.0.jar
+[2026-05-12 09:55:13] [INFO] Pluging 'sentinel-alert' estado STARTED
+[2026-05-12 09:55:13] [INFO] Plugin guardado en BD: sentinel-alert
+[2026-05-12 09:55:31] [INFO] Plugin eliminado de BD: sentinel-alert
+[2026-05-12 09:55:31] [INFO] Plugin eliminado: sentinel-alert
+[2026-05-12 09:56:21] [INFO] Jar copiado a plugins\sentinel-alert\sentinel-alert-1.0.0.jar
+[2026-05-12 09:56:21] [INFO] Pluging 'sentinel-alert' estado STARTED
+[2026-05-12 09:56:21] [INFO] Plugin guardado en BD: sentinel-alert
+[2026-05-12 09:57:31] [INFO] Plugings cargados1
+[2026-05-12 09:58:25] [INFO] Jar copiado a plugins\sentinel-alert\sentinel-alert-1.0.0.jar
+[2026-05-12 09:58:25] [INFO] Pluging 'sentinel-alert' estado STARTED
+[2026-05-12 09:58:25] [INFO] Plugin guardado en BD: sentinel-alert
+[2026-05-12 10:02:30] [INFO] Plugin cargado desde BD: sentinel-alert
+[2026-05-12 10:02:30] [INFO] Plugings cargados: 2
+[2026-05-12 10:02:48] [INFO] Plugin eliminado de BD: sentinel-alert
+[2026-05-12 10:02:48] [INFO] Plugin eliminado: sentinel-alert
+[2026-05-12 10:02:53] [INFO] Plugings cargados: 1
+[2026-05-12 10:05:54] [INFO] Plugings cargados: 1
+[2026-05-12 10:06:17] [INFO] Jar copiado a plugins\sentinel-alert\sentinel-alert-1.0.0.jar
+[2026-05-12 10:06:17] [INFO] Pluging 'sentinel-alert' estado STARTED
+[2026-05-12 10:06:17] [INFO] Plugin guardado en BD: sentinel-alert
+[2026-05-12 10:06:37] [INFO] Plugin cargado desde BD: sentinel-alert
+[2026-05-12 10:06:37] [INFO] Plugings cargados: 2

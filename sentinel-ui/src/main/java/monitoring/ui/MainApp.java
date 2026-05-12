@@ -22,8 +22,10 @@ public class MainApp extends Application {
 
         Scene scene = new Scene(root, 1000, 700);
         ThemeManager.applyTheme(root);
-        escenario.setOnCloseRequest(e -> controller.shutdown());
-        SentinelPluginManager.getInstance().detenerTodos();
+        escenario.setOnCloseRequest(e -> {
+            controller.shutdown();
+            SentinelPluginManager.getInstance().detenerTodos();
+        });
         escenario.setTitle("SentinelMon");
         escenario.setScene(scene);
         escenario.show();
