@@ -55,9 +55,10 @@ public class PluginDAO {
                 PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return rs.getInt(1) > 0;
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1) > 0;
+                }
             }
         } catch (SQLException e) {
             SentinelLogs.error("Error comprobando plugin en BD: " + e.getMessage());

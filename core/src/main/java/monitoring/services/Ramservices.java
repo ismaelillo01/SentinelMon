@@ -55,7 +55,7 @@ public class Ramservices {
     }
 
     private double bytesAGigas(long bytesTotales) {
-        return (double) bytesTotales / (1024 * 1024 * 1024);
+        return (double) bytesTotales / (1024L * 1024L * 1024L);
     }
 
     private double redondear(double valor) {

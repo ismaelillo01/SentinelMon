@@ -68,7 +68,6 @@ public class StoreController implements Initializable {
     private VBox crearTarjeta(PluginDAO.PluginBD pluginBD, boolean activo) {
         VBox card = new VBox(15);
         card.getStyleClass().add("card");
-        card.setPrefWidth(300);
         card.setPrefWidth(220);
 
         // nombre plugin
@@ -142,7 +141,7 @@ public class StoreController implements Initializable {
     private void desinstalarPlugin(String pluginId) {
         boolean ok = pluginManager.desinstalar(pluginId);
         if (ok) {
-            mostrarMensaje("Plugin '" + pluginId + "+' desinstalado", "#1dc2bb");
+            mostrarMensaje("Plugin '" + pluginId + "' desinstalado", "#1dc2bb");
         } else {
             mostrarMensaje("✗ No se pudo desinstalar '" + pluginId + "'.", "#e05555");
         }

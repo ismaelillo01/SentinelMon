@@ -12,9 +12,9 @@
         <VBox prefWidth="250" spacing="20" styleClass="sidebar">
             <Label styleClass="title-label" text="SENTINELMON" />
 
-            <Button styleClass="menu-btn, active" text="MENU" />
-            <Button styleClass="menu-btn" text="VER MAS" />
-            <Button styleClass="menu-btn" text="CONTACTANOS" />
+            <Button styleClass="menu-btn, active" text="MENÚ" />
+            <Button styleClass="menu-btn" text="VER MÁS" />
+            <Button styleClass="menu-btn" text="CONTÁCTANOS" />
             <Button styleClass="menu-btn" text="AYUDA" />
             <Region VBox.vgrow="ALWAYS" />
         </VBox>
@@ -26,11 +26,11 @@
 
             <HBox alignment="CENTER_RIGHT" prefHeight="60" spacing="15" styleClass="top-bar">
                 <HBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS" />
-                <Label fx:id="lblSystemInfo" styleClass="system-info-label" text="Equipo: DESKTOP-001   Sistema: Windows 11 Pro   Version app: 1.0.0   Estado: " />
+                <Label fx:id="lblSystemInfo" styleClass="system-info-label" text="Equipo: DESKTOP-001   Sistema: Windows 11 Pro   Versión app: 1.0.0   Estado: " />
                 <Label styleClass="status-label" text="Operativo" />
 
                 <Region prefWidth="30" />
-                <Button fx:id="btnStore" onAction="#handleStoreClick" styleClass="btn-outline" text="MODULOS / APPS" />
+                <Button fx:id="btnStore" onAction="#handleStoreClick" styleClass="btn-outline" text="MÓDULOS / APPS" />
                 <Button fx:id="btnSettings" onAction="#handleSettingsClick" styleClass="btn-icon">
                     <graphic>
                         <SVGPath content="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.06-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.73,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.8,11.69,4.8,12s0.02,0.64,0.06,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.43-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.49-0.12-0.61L19.14,12.94z M12,15.6c-1.98,0-3.6-1.62-3.6-3.6 s1.62-3.6,3.6-3.6s3.6,1.62,3.6,3.6S13.98,15.6,12,15.6z" scaleX="0.75" scaleY="0.75" />
@@ -74,7 +74,7 @@
                         <HBox>
                             <Label styleClass="metric-label" text="Temperatura" />
                             <Region HBox.hgrow="ALWAYS" />
-                            <Label fx:id="lblCpuTemp" styleClass="metric-temp" text="0 C" />
+                            <Label fx:id="lblCpuTemp" styleClass="metric-temp" text="0 °C" />
                         </HBox>
                         <ProgressBar fx:id="pbCpuTemp" prefWidth="2000" progress="0.63" styleClass="progress-bar-cyan" />
 
@@ -93,37 +93,22 @@
                             <Region HBox.hgrow="ALWAYS" />
                             <Label fx:id="lblGpuName" styleClass="metric-value-small" text="nombre gpu" />
                         </HBox>
-                        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="arc-section">
-                            <StackPane minHeight="100" minWidth="100">
-                                <Group>
-                                    <Arc length="360" radiusX="45" radiusY="45" startAngle="90" styleClass="arc-track" />
-                                    <Arc fx:id="arcGpu" length="-111" radiusX="45" radiusY="45" startAngle="90" styleClass="arc-purple" />
-                                </Group>
-                            </StackPane>
-                            <VBox alignment="CENTER_LEFT">
-                                <Label fx:id="lblGpuLoad" styleClass="metric-value-large" text="0%" />
-                                <Label styleClass="metric-label" text="Uso actual" />
-                                <Label fx:id="lblGpuVram" styleClass="metric-value-small" text="1" />
-                            </VBox>
-                        </HBox>
-
-                        <HBox styleClass="pad-top-sm">
-                            <Label styleClass="metric-label" text="Temperatura" />
+                        <HBox alignment="CENTER_LEFT" spacing="20" styleClass="pad-top-sm">
+                            <Label styleClass="metric-label" text="VRAM" />
                             <Region HBox.hgrow="ALWAYS" />
-                            <Label fx:id="lblGpuTemp" styleClass="metric-value-small" text="0 C" />
+                            <Label fx:id="lblGpuVram" styleClass="metric-value-small" text="0 GB" />
                         </HBox>
-                        <ProgressBar fx:id="pbGpuTemp" prefWidth="2000" progress="0.58" styleClass="progress-bar-cyan" />
-
-                        <HBox styleClass="pad-top-sm">
-                            <Label styleClass="metric-label" text="GPU FAN" />
-                            <Region HBox.hgrow="ALWAYS" />
-                            <Label fx:id="lblGpuFan" styleClass="metric-value-small" text="0 RPM" />
-                        </HBox>
-                        <ProgressBar prefWidth="2000" progress="0.0" styleClass="progress-bar-cyan" />
                     </VBox>
 
 
-                    <VBox styleClass="card" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.rowSpan="2">
+                    <VBox styleClass="card" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                        <Label styleClass="card-title" text="DISCOS FÍSICOS" />
+                        <VBox fx:id="vboxDisks" spacing="10" styleClass="pad-top-sm">
+                        </VBox>
+                    </VBox>
+
+
+                    <VBox styleClass="card" GridPane.columnIndex="0" GridPane.rowIndex="1">
                         <HBox alignment="CENTER_LEFT">
                             <Label styleClass="card-title" text="RAM" />
                             <Region HBox.hgrow="ALWAYS" />
@@ -144,7 +129,7 @@
                         </HBox>
 
                         <HBox styleClass="pad-top-sm">
-                            <Label styleClass="metric-label" text="Memoria valida" />
+                            <Label styleClass="metric-label" text="Memoria válida" />
                             <Region HBox.hgrow="ALWAYS" />
                             <Label fx:id="lblRamFree" styleClass="metric-value-small" text="0%" />
                         </HBox>
@@ -158,49 +143,7 @@
                         <ProgressBar fx:id="pbRamUsed" prefWidth="2000" progress="0.15" styleClass="progress-bar-cyan" />
                     </VBox>
 
-
-                    <VBox styleClass="card" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                        <Label styleClass="card-title" text="METRICAS ELECTRICAS" />
-                        <GridPane hgap="40" styleClass="pad-top-md" vgap="15">
-                            <columnConstraints>
-                                <ColumnConstraints percentWidth="50" />
-                                <ColumnConstraints percentWidth="50" />
-                            </columnConstraints>
-                            <HBox styleClass="table-row">
-                                <Label styleClass="table-text-left" text="CPU Package" />
-                                <Region HBox.hgrow="ALWAYS" />
-                                <Label styleClass="table-text-right" text="Por desarrollar" />
-                            </HBox>
-                            <HBox styleClass="table-row" GridPane.columnIndex="1">
-                                <Label styleClass="table-text-left" text="GPU Package" />
-                                <Region HBox.hgrow="ALWAYS" />
-                                <Label styleClass="table-text-right" text="Por desarrollar" />
-                            </HBox>
-                            <HBox styleClass="table-row" GridPane.rowIndex="1">
-                                <Label styleClass="table-text-left" text="CPU Voltage" />
-                                <Region HBox.hgrow="ALWAYS" />
-                                <Label styleClass="table-text-right" text="Por desarrollar" />
-                            </HBox>
-                            <HBox styleClass="table-row" GridPane.columnIndex="1" GridPane.rowIndex="1">
-                                <Label styleClass="table-text-left" text="GPU Voltage" />
-                                <Region HBox.hgrow="ALWAYS" />
-                                <Label styleClass="table-text-right" text="Por desarrollar" />
-                            </HBox>
-                     <rowConstraints>
-                        <RowConstraints />
-                        <RowConstraints />
-                     </rowConstraints>
-                        </GridPane>
-                    </VBox>
-
-
-                    <VBox styleClass="card" GridPane.columnIndex="1" GridPane.rowIndex="2">
-                        <Label styleClass="card-title" text="DISCOS FISICOS" />
-                        <VBox fx:id="vboxDisks" spacing="10" styleClass="pad-top-sm">
-                        </VBox>
-                    </VBox>
                <rowConstraints>
-                  <RowConstraints />
                   <RowConstraints />
                   <RowConstraints />
                </rowConstraints>

@@ -19,18 +19,16 @@ import java.util.List;
 import java.util.jar.Attributes;
 import java.util.jar.JarFile;
 import java.util.jar.Manifest;
-import java.util.logging.Logger;
 
 public class SentinelPluginManager {
     // carpeta donde estan los jars
     private static final Path PLUGINGS_PATH = Paths.get("plugins");
     private static SentinelPluginManager instancia;
-    private static PluginManager pf4j;
+    private PluginManager pf4j;
 
     // instanciamos una vez
     private SentinelPluginManager() {
         crearDirSiNoExiste();
-        ;
         // detecta automaticamente jar e la carpeta
         this.pf4j = new DefaultPluginManager(PLUGINGS_PATH);
     }
@@ -282,7 +280,7 @@ public class SentinelPluginManager {
         }
 
         private String normalizar(String texto) {
-            if (texto.isBlank() || texto == null) {
+            if (texto == null || texto.isBlank()) {
                 return texto;
             }
             StringBuilder sb = new StringBuilder();

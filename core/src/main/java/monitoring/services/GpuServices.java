@@ -43,7 +43,7 @@ public class GpuServices {
 
     //informacion completa de graficas
     public List<GpuInfo> getInfo() {
-        List<GpuInfo> infoGraficas = new ArrayList();
+        List<GpuInfo> infoGraficas = new ArrayList<>();
         for (GraphicsCard graficaSistema : gpu) {
             String nombreGrafica = graficaSistema.getName();
             if (nombreGrafica == null || nombreGrafica.isBlank()) {
@@ -55,7 +55,7 @@ public class GpuServices {
     }
 
     private double bytesAGigas(long bytesTotales) {
-        return (double) bytesTotales / (1024 * 1024 * 1024);
+        return (double) bytesTotales / (1024L * 1024L * 1024L);
     }
 
     private double redondear(double valor) {

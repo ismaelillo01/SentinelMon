@@ -70,19 +70,9 @@ public class DashboardController implements Initializable {
 
     // GPU
     @FXML
-    private Arc arcGpu;
-    @FXML
     private Label lblGpuName;
     @FXML
-    private Label lblGpuLoad;
-    @FXML
     private Label lblGpuVram;
-    @FXML
-    private Label lblGpuTemp;
-    @FXML
-    private Label lblGpuFan;
-    @FXML
-    private ProgressBar pbGpuTemp;
 
     // RAM
     @FXML
@@ -161,7 +151,7 @@ public class DashboardController implements Initializable {
 
         // temporizador de java fx de cada segundo llama a lanzarLectura();
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> lanzarLectura()));
-        timeline.setCycleCount(timeline.INDEFINITE);// lo hace indefinidamente
+        timeline.setCycleCount(Timeline.INDEFINITE);// lo hace indefinidamente
         timeline.play();
     }
 
@@ -170,12 +160,12 @@ public class DashboardController implements Initializable {
         OsServices osServices = new OsServices();
         OsInfo osInfo = osServices.getInfo();
         lblSystemInfo.setText("Equipo: " + osInfo.getNombreEquipo() + "   Sistema: " + osInfo.getNombre()
-                + "   Version app: 1.0.0(beta)   Estado: ");
+                + "   Versión app: 1.0.0(beta)   Estado: ");
 
         // cpu update
         CpuInfo datosCpu = miCpu.getInfo();
         lblCpuName.setText(datosCpu.getNombre());
-        lblCpuCores.setText(datosCpu.getNucleos() + " Nucleos");
+        lblCpuCores.setText(datosCpu.getNucleos() + " Núcleos");
         lblCpuSpeed.setText(datosCpu.getVelocidad());
 
         // ram update
@@ -189,20 +179,9 @@ public class DashboardController implements Initializable {
             GpuInfo gpuPrincipal = listaGpus.getFirst();
             lblGpuName.setText(gpuPrincipal.getNombre());
             lblGpuVram.setText(gpuPrincipal.getTotalVramGB() + " GB");
-            // oshi no puede leer esto
-            lblGpuLoad.setText("Por dev");
-            setArcProgress(arcGpu, 0);
-            lblGpuTemp.setText("Por dev");
-            lblGpuFan.setText("Por dev");
-            pbGpuTemp.setProgress(0.0);
         } else {
             lblGpuName.setText("No disponible");
             lblGpuVram.setText("No disponible");
-            lblGpuLoad.setText("0%");
-            setArcProgress(arcGpu, 0);
-            lblGpuTemp.setText("No disponible");
-            lblGpuFan.setText("No disponible");
-            pbGpuTemp.setProgress(0.0);
         }
     }
 
@@ -237,7 +216,7 @@ public class DashboardController implements Initializable {
         // cpu
         lblCpuLoad.setText(Math.round(snap.cpuUso) + "%");
         setArcProgress(arcCpu, snap.cpuUso);
-        lblCpuTemp.setText(snap.cpuTemp + " Cº");
+        lblCpuTemp.setText(snap.cpuTemp + " °C");
         lblCpuFan.setText(snap.cpuFan);
         try {
             pbCpuTemp.setProgress(Double.parseDouble(snap.cpuTemp) / 100.0);
@@ -264,8 +243,7 @@ public class DashboardController implements Initializable {
         // discos update
         // borramos porque si no se duplican los discos cada segundo
         vboxDisks.getChildren().clear();
-        List<DiscoInfo> listadoDiscos = misDiscos.getSpace();
-        for (DiscoInfo discoActual : listadoDiscos) {
+        for (DiscoInfo discoActual : discos) {
             if (discoActual.getLetra() != null && !discoActual.getLetra().isEmpty()) {
                 double porcentajeUsado = discoActual.getUsadoGB() / discoActual.getTotalGB();
 

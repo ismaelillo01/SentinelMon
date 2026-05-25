@@ -44,7 +44,7 @@ public class CpuServices {
 
     //devuelve porcentaje uso
     public double getUsagePercentage() {
-        return redondear(cpu.getSystemCpuLoad(1000) * 100);
+        return redondear(cpu.getSystemCpuLoad(500) * 100);
     }
 
     //devuelve temperatura con formato

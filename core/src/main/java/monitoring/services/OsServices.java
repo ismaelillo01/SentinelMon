@@ -1,5 +1,7 @@
 package monitoring.services;
 
+import java.net.InetAddress;
+
 public class OsServices {
 
     public String getOsName(){
@@ -19,7 +21,17 @@ public class OsServices {
     }
     
     public String getComputerName(){
-        return System.getenv("COMPUTERNAME");
+        // primero intenta la variable de Windows
+        String nombre = System.getenv("COMPUTERNAME");
+        if (nombre == null || nombre.isBlank()) {
+            // fallback portable para Linux/Mac
+            try {
+                nombre = InetAddress.getLocalHost().getHostName();
+            } catch (Exception e) {
+                nombre = "Desconocido";
+            }
+        }
+        return nombre;
     }
 
     public OsInfo getInfo(){

@@ -57,9 +57,9 @@ public class DiskServices {
             long libresBytes = particion.getUsableSpace();
             long usadosBytes = totalBytes - libresBytes;
 
-            double totalGB = (double) totalBytes / (1024 * 1024 * 1024);
-            double libreGB = (double) libresBytes / (1024 * 1024 * 1024);
-            double usadoGB = (double) usadosBytes / (1024 * 1024 * 1024);
+            double totalGB = (double) totalBytes / (1024L * 1024L * 1024L);
+            double libreGB = (double) libresBytes / (1024L * 1024L * 1024L);
+            double usadoGB = (double) usadosBytes / (1024L * 1024L * 1024L);
 
             infoDiscos.add(new DiscoInfo(letra, modelo, totalGB, libreGB, usadoGB));
         }
