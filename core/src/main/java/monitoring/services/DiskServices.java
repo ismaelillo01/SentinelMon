@@ -47,12 +47,13 @@ public class DiskServices {
             }
         }
 
-        List<OSFileStore> particiones = os.getFileSystem().getFileStores();//lista particiones
+        List<OSFileStore> particiones = os.getFileSystem().getFileStores();
         List<DiscoInfo> infoDiscos = new ArrayList<>();
 
         for (OSFileStore particion : particiones) {
-            String letra = particion.getMount(); // letra particion
-            String modelo = letraAModelo.getOrDefault(letra, "Desconocido");
+            String letra = particion.getMount();
+            if (!letraAModelo.containsKey(letra)) continue; // ignorar montajes virtuales/sistema
+            String modelo = letraAModelo.get(letra);
             long totalBytes = particion.getTotalSpace();
             long libresBytes = particion.getUsableSpace();
             long usadosBytes = totalBytes - libresBytes;
