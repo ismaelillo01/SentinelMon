@@ -13,9 +13,9 @@
         <VBox prefWidth="250" spacing="20" styleClass="sidebar">
             <Label styleClass="title-label" text="SENTINELMON" />
             <Button fx:id="btnMenu" onAction="#handleMenuClick" styleClass="menu-btn" text="MENU" />
-            <Button styleClass="menu-btn" text="VER MÁS" />
-            <Button styleClass="menu-btn" text="CONTÁCTANOS" />
-            <Button styleClass="menu-btn" text="AYUDA" />
+            <Button styleClass="menu-btn" text="VER MÁS" visible="false" managed="false" />
+            <Button styleClass="menu-btn" text="CONTÁCTANOS" visible="false" managed="false" />
+            <Button styleClass="menu-btn" text="AYUDA" visible="false" managed="false" />
             <Region VBox.vgrow="ALWAYS" />
         </VBox>
     </left>

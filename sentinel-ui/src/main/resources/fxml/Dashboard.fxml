@@ -13,9 +13,9 @@
             <Label styleClass="title-label" text="SENTINELMON" />
 
             <Button styleClass="menu-btn, active" text="MENÚ" />
-            <Button styleClass="menu-btn" text="VER MÁS" />
-            <Button styleClass="menu-btn" text="CONTÁCTANOS" />
-            <Button styleClass="menu-btn" text="AYUDA" />
+            <Button styleClass="menu-btn" text="VER MÁS" visible="false" managed="false" />
+            <Button styleClass="menu-btn" text="CONTÁCTANOS" visible="false" managed="false" />
+            <Button styleClass="menu-btn" text="AYUDA" visible="false" managed="false" />
             <Region VBox.vgrow="ALWAYS" />
         </VBox>
     </left>
